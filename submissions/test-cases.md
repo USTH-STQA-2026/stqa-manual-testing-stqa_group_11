@@ -55,6 +55,27 @@
 | | = 3 (BVA: giới hạn) | MEM đã mượn 3 sách | Từ chối, thông báo vượt giới hạn |
 
 ### IDM — `<!-- Nhóm tự bổ sung cho REQ-05 đến REQ-08 -->`
+### IDM — Quản lý thành viên (REQ-07)
+
+| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+|---|---|---|---|
+| Email format? | Hợp lệ | `new@email.com` | Tạo thành công |
+| | Không hợp lệ | `new@domain` | Báo lỗi email |
+| | Rỗng | `""` | Báo bắt buộc nhập |
+| Email có bị trùng? | Email mới | `new@email.com` | Cho phép tạo |
+| | Đã tồn tại | `ba.nguyen@email.com` | Báo email đã tồn tại |
+| Họ tên thành viên? | Có nhập | `Nguyen Van A` | Xử lý bình thường |
+| | Rỗng | `""` | Báo lỗi bắt buộc nhập |
+### IDM — Tra cứu lịch sử mượn (REQ-08)
+
+| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+|---|---|---|---|
+| Vai trò người dùng? | Librarian | `LIB001` | Xem toàn bộ lịch sử |
+| | Member | `MEM002` | Chỉ xem lịch sử của mình |
+| Truy cập lịch sử người khác? | Không cố truy cập | `MEM002 → own records` | Hiển thị bình thường |
+| | Cố truy cập | `MEM002 → MEM003 records` | Từ chối truy cập |
+| Dữ liệu lịch sử? | Có dữ liệu | `MEM002` | Hiển thị danh sách |
+| | Không có dữ liệu | `MEM999` | Hiển thị danh sách rỗng |
 
 | Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
 |---|---|---|---|
