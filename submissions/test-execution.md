@@ -30,6 +30,7 @@
 | TC-12 | Mượn sách | Mượn thành công BOOK004 cho MEM002, tạo phiếu mới | Mượn thành công | Pass | | |
 | TC-13 | Mượn sách | Từ chối mượn BOOK003 (đang mượn), thông báo sách không có sẵn | Không có nút mượn thêm | Pass | | |
 | TC-14 | Mượn sách | Từ chối mượn BOOK007 (thất lạc), thông báo sách không có sẵn | Không có nút mượn | Pass | | |
+<<<<<<< HEAD
 | TC-15 | Mượn sách | Từ chối MEM004 (tạm ngưng), thông báo chứa "tạm ngưng" | Từ chối mượn nhưng thông báo hiển thị "hết hạn" thay vì "tạm ngưng" | **Fail** | | BUG-01 |
 | TC-16 | Mượn sách | Từ chối MEM005 (hết hạn), thông báo chứa "hết hạn" | Từ chối mượn, thông báo hiển thị "hết hạn" | Pass | | |
 | TC-17 | Mượn sách | Bước 1-3: mượn thành công; Bước 4: từ chối, giới hạn 3 sách | Bước 1-3: mượn thành công. Bước 4: mượn sách thứ 4 vẫn thành công, không bị từ chối | **Fail** | | BUG-02 |
