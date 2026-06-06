@@ -1,172 +1,147 @@
-# Test Cases — Bảng trường hợp kiểm thử
+# Test Cases
 
-> **Hướng dẫn**: Viết tối thiểu **20 TC** phủ đủ các chức năng chính (REQ-01 → REQ-08).
-> Xem [examples/sample-test-case.md](../examples/sample-test-case.md) để hiểu cách viết TC tốt.
-> Tự tổ chức và phân nhóm test case theo cách hợp lý nhất.
-
-| Thông tin | |
+| Information | |
 |---|---|
-| **Nhóm** | Nhóm 11 |
-| **Ngày tạo** | 27/05/2026 |
-| **Hệ thống** | https://stqa.rbc.vn |
-| **Tham chiếu** | SRS v1.0 |
+| **Team** | Team 11 |
+| **Date Created** | 27/05/2026 |
+| **System** | https://stqa.rbc.vn |
+| **Reference** | SRS v1.0 |
 
 ---
 
-## Bước 1: Mô hình hóa miền đầu vào — Input Domain Modeling (IDM)
+## Step 1: Input Domain Modeling (IDM)
 
-> 📖 **Textbook:** Chương 6 — *Input Domain Modeling*, Paul Ammann & Jeff Offutt.
+> 📖 **Textbook:** Chapter 6 — *Input Domain Modeling*, Paul Ammann & Jeff Offutt.
 >
-> **Trước khi viết Test Case**, nhóm **phải** phân tích miền đầu vào bằng bảng IDM bên dưới.
-> Mỗi chức năng cần xác định: **Đặc tính (Characteristic)**, **Phân vùng (Block)**, và **Giá trị đại diện (Value)**.
+> **Before writing Test Cases**, the team **must** analyze the input domain using the IDM tables below.
+> Each feature must identify: **Characteristic**, **Block (Partition)**, and **Representative Value**.
 
-### IDM — Đăng nhập (REQ-01)
+### IDM — Login (REQ-01)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Email có tồn tại trong DB? | Có | `librarian@library.com` | Đăng nhập thành công |
-| | Không | `noone@email.com` | Thông báo "Không tìm thấy thành viên" |
-| Mật khẩu có đúng? | Đúng | `admin123` | Đăng nhập thành công |
-| | Sai | `wrongpass` | Thông báo "Mật khẩu không đúng" |
-| Ô nhập có rỗng? | Không rỗng | (giá trị bất kỳ) | Xử lý bình thường |
-| | Rỗng | `""` | Thông báo "Vui lòng nhập email và mật khẩu" |
+| Does email exist in DB? | Yes | `librarian@library.com` | Login successful |
+| | No | `noone@email.com` | Message: "Member not found" |
+| Is password correct? | Correct | `admin123` | Login successful |
+| | Incorrect | `wrongpass` | Message: "Incorrect password" |
+| Is input field empty? | Not empty | (any value) | Normal processing |
+| | Empty | `""` | Message: "Please enter email and password" |
 
-### IDM — Xem danh sách sách (REQ-02)
+### IDM — View Book List (REQ-02)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Vai trò người dùng? | Thủ thư | `librarian@library.com` | Xem được danh sách sách đầy đủ |
-| | Thành viên | `ba.nguyen@email.com` | Xem được danh sách sách đầy đủ |
-| Cập nhật trạng thái real-time? | Sau khi mượn | Mượn BOOK001 → kiểm tra danh sách | BOOK001 chuyển trạng thái "Đang mượn" |
-| | Sau khi trả | Trả BOOK003 → kiểm tra danh sách | BOOK003 chuyển trạng thái "Có sẵn" |
+| User role? | Librarian | `librarian@library.com` | Full book list visible |
+| | Member | `ba.nguyen@email.com` | Full book list visible |
+| Real-time status update? | After borrowing | Borrow BOOK001 → check list | BOOK001 changes to "Borrowed" |
+| | After returning | Return BOOK003 → check list | BOOK003 changes to "Available" |
 
-### IDM — Tìm kiếm và lọc sách (REQ-03)
+### IDM — Search & Filter Books (REQ-03)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Từ khóa có tồn tại trong DB? | Có (tên sách) | `"Flutter"` | Hiển thị sách chứa "Flutter" |
-| | Có (tên tác giả) | `"Nguyễn"` | Hiển thị sách của tác giả Nguyễn |
-| | Không | `"XYZ123"` | Danh sách rỗng, thông báo "Không tìm thấy sách" |
-| Phân biệt HOA/thường? | Chữ thường | `"flutter"` | Kết quả giống "Flutter" (case-insensitive) |
-| | Chữ HOA | `"FLUTTER"` | Kết quả giống "Flutter" (case-insensitive) |
-| Lọc theo thể loại? | Thể loại có sách | `"Công nghệ"` | Hiển thị sách thể loại Công nghệ |
-| | Thể loại — kiểm tra hoa/thường | `"công nghệ"` | Kết quả giống "Công nghệ" (case-insensitive theo SRS) |
+| Does keyword exist in DB? | Yes (book title) | `"Flutter"` | Shows books containing "Flutter" |
+| | Yes (author name) | `"Nguyen"` | Shows books by author Nguyen |
+| | No | `"XYZ123"` | Empty list, message "No books found" |
+| Case sensitivity? | Lowercase | `"flutter"` | Same result as "Flutter" (case-insensitive) |
+| | Uppercase | `"FLUTTER"` | Same result as "Flutter" (case-insensitive) |
+| Filter by genre? | Genre with books | `"Technology"` | Shows Technology genre books |
+| | Genre — case check | `"technology"` | Same result as "Technology" (case-insensitive per SRS) |
 
-### IDM — Mượn sách (REQ-04)
+### IDM — Borrow Book (REQ-04)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Trạng thái sách? | Có sẵn | BOOK001 | Cho phép mượn |
-| | Đang mượn | BOOK003 | Từ chối, thông báo sách không có sẵn |
-| | Thất lạc | BOOK007 | Từ chối, thông báo sách không có sẵn |
-| Trạng thái thành viên? | Hoạt động | MEM002 | Cho phép mượn |
-| | Tạm ngưng | MEM004 | Từ chối, thông báo chứa "tạm ngưng" |
-| | Hết hạn | MEM005 | Từ chối, thông báo chứa "hết hạn" |
-| Số sách đang mượn? | < 3 (BVA: 2) | Thành viên đang mượn 2 sách | Cho phép mượn |
-| | = 3 (BVA: giới hạn) | Thành viên đang mượn 3 sách | Từ chối, thông báo vượt giới hạn |
+| Book status? | Available | BOOK001 | Borrowing allowed |
+| | Borrowed | BOOK003 | Rejected, message: book not available |
+| | Lost | BOOK007 | Rejected, message: book not available |
+| Member status? | Active | MEM002 | Borrowing allowed |
+| | Suspended | MEM004 | Rejected, message contains "suspended" |
+| | Expired | MEM005 | Rejected, message contains "expired" |
+| Number of books currently borrowed? | < 3 (BVA: 2) | Member currently borrowing 2 books | Borrowing allowed |
+| | = 3 (BVA: limit) | Member currently borrowing 3 books | Rejected, message: limit exceeded |
 
-### IDM — Trả sách (REQ-05)
+### IDM — Return Book (REQ-05)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Sách đang mượn bởi thành viên? | Đang mượn | BR003 (MEM006 mượn BOOK013) | Trả thành công, sách → "Có sẵn" |
-| | Không mượn | Sách đã trả (BR002) | Không cho trả |
-| Trả quá hạn? | Quá hạn (dueDate ≤ hôm nay) | BR001 (MEM002, hết hạn 15/09/2024) | Hiển thị cảnh báo quá hạn + trả thành công |
-| | Đúng hạn | Sách chưa hết hạn | Trả thành công, không cảnh báo |
+| Book currently borrowed by member? | Currently borrowed | BR003 (MEM006 borrowed BOOK013) | Return successful, book → "Available" |
+| | Not borrowed | Already returned book (BR002) | Cannot return |
+| Returning overdue? | Overdue (dueDate ≤ today) | BR001 (MEM002, due 15/09/2024) | Show overdue warning + return successful |
+| | On time | Book not yet overdue | Return successful, no warning |
 
-### IDM — Xử lý sách quá hạn (REQ-06)
+### IDM — Overdue Handling (REQ-06)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Phiếu có quá hạn? | Có (dueDate ≤ hôm nay) | BR001 (hết hạn 15/09/2024) | Đánh dấu "Quá hạn" sau khi Thủ thư nhấn kiểm tra |
-| | Không (dueDate > hôm nay) | BR003 (hết hạn 15/10/2024 — còn hạn so với hiện tại nếu hệ thống dùng ngày mô phỏng) | Không đánh dấu quá hạn |
-| Ai kiểm tra? | Thủ thư | `librarian@library.com` | Xem tất cả phiếu quá hạn |
-| | Thành viên | `ba.nguyen@email.com` | Chỉ xem phiếu quá hạn của mình |
+| Is record overdue? | Yes (dueDate ≤ today) | BR001 (due 15/09/2024) | Marked "Overdue" after Librarian clicks check |
+| | No (dueDate > today) | BR003 (due 15/10/2024) | Not marked overdue |
+| Who checks? | Librarian | `librarian@library.com` | Sees all overdue records |
+| | Member | `ba.nguyen@email.com` | Sees only own overdue records |
 
-### IDM — Quản lý thành viên (REQ-07)
+### IDM — Member Management (REQ-07)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Email hợp lệ? | Hợp lệ (có `@` VÀ `.` trong domain) | `newmember@email.com` | Tạo thành công |
-| | Không hợp lệ — thiếu dấu chấm domain | `user@domain` | Thông báo lỗi email không hợp lệ |
-| | Không hợp lệ — thiếu `@` | `userdomain.com` | Thông báo lỗi email không hợp lệ |
-| Email đã tồn tại? | Chưa tồn tại | `newperson@test.com` | Tạo thành công |
-| | Đã tồn tại | `ba.nguyen@email.com` | Thông báo lỗi email đã tồn tại |
-| Thông tin bắt buộc? | Đầy đủ | Họ tên, email, SĐT | Tạo thành công |
-| | Thiếu họ tên | Không nhập họ tên | Thông báo lỗi |
+| Valid email? | Valid (has `@` AND `.` in domain) | `newmember@email.com` | Created successfully |
+| | Invalid — missing dot in domain | `user@domain` | Email invalid error message |
+| | Invalid — missing `@` | `userdomain.com` | Email invalid error message |
+| Email already exists? | Not yet exists | `newperson@test.com` | Created successfully |
+| | Already exists | `ba.nguyen@email.com` | Email already exists error message |
+| Required fields? | Complete | Full name, email, phone | Created successfully |
+| | Missing full name | No name entered | Error message |
 
-### IDM — Tra cứu phiếu mượn (REQ-08)
-### IDM — Quản lý thành viên (REQ-07)
+### IDM — Borrow Record Lookup (REQ-08)
 
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
+| Characteristic | Block (Partition) | Representative Value | Expected Result |
 |---|---|---|---|
-| Email format? | Hợp lệ | `new@email.com` | Tạo thành công |
-| | Không hợp lệ | `new@domain` | Báo lỗi email |
-| | Rỗng | `""` | Báo bắt buộc nhập |
-| Email có bị trùng? | Email mới | `new@email.com` | Cho phép tạo |
-| | Đã tồn tại | `ba.nguyen@email.com` | Báo email đã tồn tại |
-| Họ tên thành viên? | Có nhập | `Nguyen Van A` | Xử lý bình thường |
-| | Rỗng | `""` | Báo lỗi bắt buộc nhập |
-### IDM — Tra cứu lịch sử mượn (REQ-08)
-
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
-|---|---|---|---|
-| Vai trò người dùng? | Librarian | `LIB001` | Xem toàn bộ lịch sử |
-| | Member | `MEM002` | Chỉ xem lịch sử của mình |
-| Truy cập lịch sử người khác? | Không cố truy cập | `MEM002 → own records` | Hiển thị bình thường |
-| | Cố truy cập | `MEM002 → MEM003 records` | Từ chối truy cập |
-| Dữ liệu lịch sử? | Có dữ liệu | `MEM002` | Hiển thị danh sách |
-| | Không có dữ liệu | `MEM999` | Hiển thị danh sách rỗng |
-
-| Đặc tính (Characteristic) | Phân vùng (Block) | Giá trị đại diện (Value) | Kết quả mong đợi |
-|---|---|---|---|
-| Vai trò xem phiếu? | Thủ thư | `librarian@library.com` | Xem tất cả phiếu mọi thành viên |
-| | Thành viên | `ba.nguyen@email.com` | Chỉ xem phiếu của mình |
-| Thành viên xem phiếu người khác? | Xem phiếu mình | MEM002 xem BR001, BR004 | Hiển thị |
-| | Xem phiếu người khác | MEM002 không xem được BR003 (MEM006) | Không hiển thị phiếu của người khác |
-| Thông tin mỗi phiếu? | Hiển thị đủ | BR001 | Mã phiếu, sách mượn, ngày mượn, hạn trả, trạng thái |
+| User role viewing records? | Librarian | `librarian@library.com` | Sees all records of all members |
+| | Member | `ba.nguyen@email.com` | Sees only own records |
+| Member viewing another's records? | Viewing own records | MEM002 views BR001, BR004 | Displayed |
+| | Viewing another's records | MEM002 cannot view BR003 (MEM006) | Other member's records not shown |
+| Record information? | Complete display | BR001 | Record ID, book borrowed, borrow date, due date, status |
 
 ---
 
-## Bước 2: Bảng quyết định — Decision Table (REQ-04: Mượn sách)
+## Step 2: Decision Table (REQ-04: Borrow Book)
 
-> 📖 **Bonus B2**: Bảng Decision Table hoàn chỉnh cho chức năng Mượn sách.
-> 3 điều kiện kết hợp: Trạng thái sách × Trạng thái thành viên × Số sách đang mượn.
+> 📖 **Bonus B2**: Complete Decision Table for the Borrow Book feature.
+> 3 combined conditions: Book Status × Member Status × Number of Books Borrowed.
 
-### Điều kiện (Conditions)
+### Conditions
 
-| Mã | Điều kiện | Giá trị |
+| Code | Condition | Values |
 |----|-----------|---------|
-| **C1** | Trạng thái sách | Có sẵn (Y) / Không có sẵn (N: Đang mượn hoặc Thất lạc) |
-| **C2** | Trạng thái thành viên | Hoạt động (Y) / Không hoạt động (N: Tạm ngưng hoặc Hết hạn) |
-| **C3** | Số sách đang mượn < 3? | Có (Y) / Không (N) |
+| **C1** | Book status | Available (Y) / Not available (N: Borrowed or Lost) |
+| **C2** | Member status | Active (Y) / Not active (N: Suspended or Expired) |
+| **C3** | Number of books borrowed < 3? | Yes (Y) / No (N) |
 
-### Bảng quyết định đầy đủ (Full Decision Table)
+### Full Decision Table
 
-| Quy tắc | C1: Sách Có sẵn? | C2: TV Hoạt động? | C3: Sách < 3? | Kết quả | Thông báo lỗi |
+| Rule | C1: Book Available? | C2: Member Active? | C3: Books < 3? | Result | Error Message |
 |---------|:-:|:-:|:-:|:--------:|---------------|
-| **R1** | Y | Y | Y | ✅ Cho mượn | — |
-| **R2** | Y | Y | N | ❌ Từ chối | Đã đạt giới hạn mượn tối đa (3 sách) |
-| **R3** | Y | N (Tạm ngưng) | Y | ❌ Từ chối | Thành viên đang bị tạm ngưng. Không thể mượn sách. |
-| **R4** | Y | N (Tạm ngưng) | N | ❌ Từ chối | Thành viên đang bị tạm ngưng. Không thể mượn sách. |
-| **R5** | Y | N (Hết hạn) | Y | ❌ Từ chối | Thành viên đã hết hạn. Không thể mượn sách. |
-| **R6** | Y | N (Hết hạn) | N | ❌ Từ chối | Thành viên đã hết hạn. Không thể mượn sách. |
-| **R7** | N (Đang mượn) | Y | Y | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R8** | N (Đang mượn) | Y | N | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R9** | N (Đang mượn) | N (Tạm ngưng) | Y | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R10** | N (Đang mượn) | N (Tạm ngưng) | N | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R11** | N (Đang mượn) | N (Hết hạn) | Y | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R12** | N (Đang mượn) | N (Hết hạn) | N | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R13** | N (Thất lạc) | Y | Y | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R14** | N (Thất lạc) | Y | N | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R15** | N (Thất lạc) | N (Tạm ngưng) | Y | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R16** | N (Thất lạc) | N (Tạm ngưng) | N | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R17** | N (Thất lạc) | N (Hết hạn) | Y | ❌ Từ chối | Sách không có sẵn để mượn. |
-| **R18** | N (Thất lạc) | N (Hết hạn) | N | ❌ Từ chối | Sách không có sẵn để mượn. |
+| **R1** | Y | Y | Y | ✅ Allow borrow | — |
+| **R2** | Y | Y | N | ❌ Reject | Maximum borrow limit reached (3 books) |
+| **R3** | Y | N (Suspended) | Y | ❌ Reject | Member is suspended. Cannot borrow books. |
+| **R4** | Y | N (Suspended) | N | ❌ Reject | Member is suspended. Cannot borrow books. |
+| **R5** | Y | N (Expired) | Y | ❌ Reject | Member account has expired. Cannot borrow books. |
+| **R6** | Y | N (Expired) | N | ❌ Reject | Member account has expired. Cannot borrow books. |
+| **R7** | N (Borrowed) | Y | Y | ❌ Reject | Book is not available for borrowing. |
+| **R8** | N (Borrowed) | Y | N | ❌ Reject | Book is not available for borrowing. |
+| **R9** | N (Borrowed) | N (Suspended) | Y | ❌ Reject | Book is not available for borrowing. |
+| **R10** | N (Borrowed) | N (Suspended) | N | ❌ Reject | Book is not available for borrowing. |
+| **R11** | N (Borrowed) | N (Expired) | Y | ❌ Reject | Book is not available for borrowing. |
+| **R12** | N (Borrowed) | N (Expired) | N | ❌ Reject | Book is not available for borrowing. |
+| **R13** | N (Lost) | Y | Y | ❌ Reject | Book is not available for borrowing. |
+| **R14** | N (Lost) | Y | N | ❌ Reject | Book is not available for borrowing. |
+| **R15** | N (Lost) | N (Suspended) | Y | ❌ Reject | Book is not available for borrowing. |
+| **R16** | N (Lost) | N (Suspended) | N | ❌ Reject | Book is not available for borrowing. |
+| **R17** | N (Lost) | N (Expired) | Y | ❌ Reject | Book is not available for borrowing. |
+| **R18** | N (Lost) | N (Expired) | N | ❌ Reject | Book is not available for borrowing. |
 
-### Ánh xạ Quy tắc → Test Case
+### Rule → Test Case Mapping
 
-| Quy tắc | TC tương ứng | Ghi chú |
+| Rule | Corresponding TC | Notes |
 |---------|-------------|---------|
 | R1 | TC-12 | Happy path |
 | R2 | TC-17 | BVA boundary |
@@ -174,100 +149,100 @@
 | R5 | TC-16 | Expired member |
 | R7 | TC-13 | Borrowed book |
 | R13 | TC-14 | Lost book |
-| R4, R6, R9–R12, R14–R18 | Kết quả trùng với R3/R5/R7/R13 — không cần TC riêng | Điều kiện mạnh hơn đã bao phủ |
+| R4, R6, R9–R12, R14–R18 | Results overlap with R3/R5/R7/R13 — no separate TC needed | Stronger condition already covered |
 
-> **Ghi chú**: Quy tắc R4, R6, R9–R18 có kết quả trùng với các quy tắc đã test (R3, R5, R7, R13). Khi sách không có sẵn hoặc thành viên không hoạt động, lý do từ chối do điều kiện "mạnh hơn" (được kiểm tra trước trong code) sẽ hiển thị. Do đó chỉ cần 6 TC để bao phủ 18 quy tắc có kết quả duy nhất.
-
----
-
-## Bước 3: Test Cases
-
-### REQ-01: Đăng nhập
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-01 | Đăng nhập thành công — Thủ thư | Trang đăng nhập đã mở, dữ liệu đã reset | 1. Nhập email `librarian@library.com`. 2. Nhập mật khẩu `admin123`. 3. Nhấn nút **Đăng nhập**. | Email: `librarian@library.com`, MK: `admin123` | Chuyển sang trang chủ. Thanh AppBar hiển thị tên "Nguyễn Thủ Thư" và vai trò "Thủ thư". | REQ-01 | EP |
-| TC-02 | Đăng nhập thất bại — Email không tồn tại | Trang đăng nhập đã mở | 1. Nhập email `nobody@test.com`. 2. Nhập mật khẩu `anything`. 3. Nhấn nút **Đăng nhập**. | Email: `nobody@test.com`, MK: `anything` | Không chuyển trang. Hiển thị thông báo lỗi "Không tìm thấy thành viên". | REQ-01 | EP |
-| TC-03 | Đăng nhập thất bại — Sai mật khẩu | Trang đăng nhập đã mở | 1. Nhập email `ba.nguyen@email.com`. 2. Nhập mật khẩu `wrongpassword`. 3. Nhấn nút **Đăng nhập**. | Email: `ba.nguyen@email.com`, MK: `wrongpassword` | Không chuyển trang. Hiển thị thông báo lỗi "Mật khẩu không đúng". | REQ-01 | EP |
-| TC-04 | Đăng nhập thất bại — Bỏ trống cả 2 ô | Trang đăng nhập đã mở | 1. Để trống ô email. 2. Để trống ô mật khẩu. 3. Nhấn nút **Đăng nhập**. | Email: `""`, MK: `""` | Không chuyển trang. Hiển thị thông báo lỗi "Vui lòng nhập email và mật khẩu". | REQ-01 | EP |
-
-### REQ-02: Xem danh sách sách
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-05 | Xem danh sách sách — Cả hai vai trò đều xem được | Đã đăng nhập (thử lần lượt Thủ thư và Thành viên) | 1. Đăng nhập Thủ thư → chuyển đến tab "Sách". 2. Đăng xuất. 3. Đăng nhập Thành viên (`ba.nguyen@email.com`) → chuyển đến tab "Sách". | N/A | Cả 2 lần đều hiển thị danh sách 20 sách. Mỗi sách hiển thị: tên, tác giả, thể loại, năm xuất bản, trạng thái (Có sẵn / Đang mượn / Thất lạc). | REQ-02 | EP |
-| TC-06 | Cập nhật trạng thái sách real-time sau khi mượn | Đã đăng nhập bằng MEM002 (`ba.nguyen@email.com`). Dữ liệu đã reset. | 1. Chuyển đến tab "Sách". Ghi nhận BOOK001 trạng thái "Có sẵn". 2. Mượn sách BOOK001. 3. Quay lại tab "Sách". Kiểm tra trạng thái BOOK001. | Sách: BOOK001 | Sau bước 2: BOOK001 chuyển trạng thái "Đang mượn". Cập nhật hiển thị ngay lập tức trên danh sách mà không cần refresh. | REQ-02 | EP |
-
-### REQ-03: Tìm kiếm và lọc sách
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-07 | Tìm kiếm theo tên sách — Có kết quả | Đã đăng nhập, đang ở tab "Sách" | 1. Nhập từ khóa `"Flutter"` vào ô tìm kiếm. | Từ khóa: `"Flutter"` | Hiển thị sách "Lập trình Flutter cơ bản" (BOOK001, Nguyễn Minh Đức, Công nghệ, 2023). | REQ-03 | EP |
-| TC-08 | Tìm kiếm theo tác giả — Có kết quả | Đã đăng nhập, đang ở tab "Sách" | 1. Nhập từ khóa `"Nguyễn Minh Đức"` vào ô tìm kiếm. | Từ khóa: `"Nguyễn Minh Đức"` | Hiển thị 2 sách của tác giả Nguyễn Minh Đức: BOOK001 (Lập trình Flutter cơ bản) và BOOK009 (Nhập môn lập trình Python). | REQ-03 | EP |
-| TC-09 | Tìm kiếm — Không có kết quả | Đã đăng nhập, đang ở tab "Sách" | 1. Nhập từ khóa `"xyz_khong_ton_tai"` vào ô tìm kiếm. | Từ khóa: `"xyz_khong_ton_tai"` | Danh sách rỗng. Hiển thị thông báo "Không tìm thấy sách". | REQ-03 | EP |
-| TC-10 | Tìm kiếm không phân biệt hoa/thường (case-insensitive) | Đã đăng nhập, đang ở tab "Sách" | 1. Nhập từ khóa `"flutter"` (chữ thường) vào ô tìm kiếm. 2. Xóa, nhập `"FLUTTER"` (chữ HOA) vào ô tìm kiếm. | Từ khóa: `"flutter"`, `"FLUTTER"` | Cả 2 lần đều hiển thị kết quả giống `"Flutter"` — sách BOOK001 (Lập trình Flutter cơ bản). Tìm kiếm KHÔNG phân biệt chữ hoa/thường theo SRS REQ-03. | REQ-03 | BVA |
-| TC-11 | Lọc sách theo thể loại | Đã đăng nhập, đang ở tab "Sách" | 1. Chọn thể loại "Công nghệ" trong bộ lọc. | Thể loại: `"Công nghệ"` | Hiển thị 8 sách thể loại Công nghệ: BOOK001, BOOK002, BOOK003, BOOK005, BOOK008, BOOK009, BOOK010, BOOK011. | REQ-03 | EP |
-
-### REQ-04: Mượn sách
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-12 | Mượn sách thành công — Sách Có sẵn, TV Hoạt động (DT-R1) | Đã đăng nhập bằng MEM002 (`ba.nguyen@email.com`, Hoạt động). Dữ liệu đã reset. | 1. Chuyển đến tab "Sách". 2. Chọn sách BOOK004 (Quản trị dự án phần mềm, Có sẵn). 3. Nhấn nút **Mượn**. | TV: MEM002, Sách: BOOK004 | Mượn thành công. Tạo phiếu mượn mới, hạn trả = ngày mượn + 14 ngày. Sách BOOK004 chuyển trạng thái "Đang mượn". Số sách đang mượn của MEM002 tăng lên 2. | REQ-04 | EP, DT-R1 |
-| TC-13 | Mượn sách đã được mượn — Từ chối (DT-R7) | Đã đăng nhập. Dữ liệu đã reset (BOOK003 đang mượn bởi MEM002). | 1. Chuyển đến tab "Sách". 2. Tìm sách BOOK003 (trạng thái "Đang mượn"). 3. Nhấn nút **Mượn**. | Sách: BOOK003 (Đang mượn) | Không cho mượn. Hiển thị thông báo lỗi mô tả sách không có sẵn để mượn. | REQ-04 | EP, DT-R7 |
-| TC-14 | Mượn sách Thất lạc — Từ chối (DT-R13) | Đã đăng nhập. Dữ liệu đã reset (BOOK007 trạng thái "Thất lạc"). | 1. Chuyển đến tab "Sách". 2. Tìm sách BOOK007 (Kinh tế vi mô, Thất lạc). 3. Nhấn nút **Mượn**. | Sách: BOOK007 (Thất lạc) | Không cho mượn. Hiển thị thông báo lỗi mô tả sách không có sẵn để mượn. | REQ-04 | EP, DT-R13 |
-| TC-15 | Thành viên Tạm ngưng mượn sách — Từ chối (DT-R3) | Đã đăng nhập bằng tài khoản Thủ thư. Dữ liệu đã reset. | 1. Chuyển đến tab "Sách". 2. Chọn sách BOOK001 (Có sẵn). 3. Mượn cho thành viên MEM004 (Lê Cần Cù, Tạm ngưng). | TV: MEM004 (Tạm ngưng), Sách: BOOK001 | Không cho mượn. Hiển thị thông báo lỗi chứa "tạm ngưng" — KHÔNG hiển thị "hết hạn" (theo SRS: phải mô tả đúng lý do). | REQ-04 | EP, DT-R3 |
-| TC-16 | Thành viên Hết hạn mượn sách — Từ chối (DT-R5) | Đã đăng nhập bằng tài khoản Thủ thư. Dữ liệu đã reset. | 1. Chuyển đến tab "Sách". 2. Chọn sách BOOK001 (Có sẵn). 3. Mượn cho thành viên MEM005 (Phạm Trung Bình, Hết hạn). | TV: MEM005 (Hết hạn), Sách: BOOK001 | Không cho mượn. Hiển thị thông báo lỗi chứa "hết hạn" — KHÔNG hiển thị "tạm ngưng" (theo SRS: phải mô tả đúng lý do). | REQ-04 | EP, DT-R5 |
-| TC-17 | Mượn sách — Giới hạn tối đa 3 sách (BVA boundary, DT-R2) | Đã đăng nhập bằng MEM003 (`dam.tran@email.com`, Hoạt động, đang mượn 0 sách). Dữ liệu đã reset. | 1. Mượn BOOK001 → ghi nhận (đang mượn 1). 2. Mượn BOOK002 → ghi nhận (đang mượn 2). 3. Mượn BOOK004 → ghi nhận (đang mượn 3). 4. Mượn BOOK005 → ghi nhận (đang mượn 3, thử mượn cuốn thứ 4). | TV: MEM003, BVA boundary: 2 sách → 3 sách | Bước 1–3: Mượn thành công (số sách < 3 hoặc = 3 sau khi mượn). Bước 4: Từ chối, hiển thị thông báo lỗi "Đã đạt giới hạn mượn tối đa (3 sách)". | REQ-04 | BVA, DT-R2 |
-
-### REQ-05: Trả sách
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-18 | Trả sách đúng hạn — Trạng thái cập nhật | Đã đăng nhập bằng MEM006 (`biet.hoang@email.com`). Dữ liệu đã reset (MEM006 đang mượn BOOK003...). Ghi chú: thực tế MEM006 đang mượn BOOK013 (BR003). | 1. Chuyển đến tab "Mượn / Trả". 2. Chọn phiếu mượn BR003 (MEM006, BOOK013). 3. Nhấn nút **Trả**. | Phiếu: BR003, Sách: BOOK013 | Trả thành công. BOOK013 chuyển trạng thái "Có sẵn". Phiếu BR003 chuyển trạng thái "Đã trả". Không hiển thị cảnh báo quá hạn (BR003 còn hạn). | REQ-05 | EP |
-| TC-19 | Trả sách quá hạn — Hiển thị cảnh báo | Đã đăng nhập bằng MEM002 (`ba.nguyen@email.com`). Dữ liệu đã reset. Thủ thư đã nhấn "Kiểm tra quá hạn" (BR001 được đánh dấu quá hạn). | 1. Chuyển đến tab "Mượn / Trả". 2. Chọn phiếu mượn BR001 (MEM002, BOOK003, quá hạn). 3. Nhấn nút **Trả**. | Phiếu: BR001, Sách: BOOK003 | Hiển thị cảnh báo quá hạn rõ ràng trước khi trả. Sau khi xác nhận: trả thành công, BOOK003 chuyển trạng thái "Có sẵn", phiếu BR001 chuyển trạng thái "Đã trả". | REQ-05 | EP |
-
-### REQ-06: Xử lý sách quá hạn
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-20 | Thủ thư kiểm tra quá hạn — Đánh dấu phiếu quá hạn | Đã đăng nhập bằng Thủ thư (`librarian@library.com`). Dữ liệu đã reset (BR001 có dueDate 15/09/2024 ≤ hôm nay). | 1. Chuyển đến tab "Mượn / Trả". 2. Nhấn nút **Kiểm tra quá hạn**. 3. Kiểm tra trạng thái phiếu BR001. | N/A | BR001 (dueDate 15/09/2024 ≤ ngày hiện tại) được đánh dấu trạng thái "Quá hạn". Các phiếu khác có dueDate > hôm nay không bị đánh dấu. | REQ-06 | EP |
-| TC-21 | Thành viên xem phiếu quá hạn của mình | Đã đăng nhập bằng MEM002 (`ba.nguyen@email.com`). Thủ thư đã nhấn "Kiểm tra quá hạn". | 1. Chuyển đến tab "Mượn / Trả". 2. Xem danh sách phiếu mượn của tôi. | N/A | MEM002 thấy phiếu BR001 (BOOK003) với trạng thái "Quá hạn". Không thấy phiếu của thành viên khác. | REQ-06 | EP |
-
-### REQ-07: Quản lý thành viên
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-22 | Thêm thành viên mới hợp lệ | Đã đăng nhập bằng Thủ thư (`librarian@library.com`). Dữ liệu đã reset. | 1. Chuyển đến tab "Thành viên". 2. Nhấn nút **Thêm thành viên**. 3. Nhập họ tên `Nguyễn Văn Mới`. 4. Nhập email `nguyenvanmoi@email.com`. 5. Nhập SĐT `0901234567`. 6. Nhấn nút **Tạo** / **Lưu**. | Họ tên: `Nguyễn Văn Mới`, Email: `nguyenvanmoi@email.com`, SĐT: `0901234567` | Tạo thành công. Thành viên mới xuất hiện trong danh sách với trạng thái "Hoạt động". | REQ-07 | EP |
-| TC-23 | Thêm thành viên — Email không hợp lệ, thiếu dấu chấm trong domain (BVA) | Đã đăng nhập bằng Thủ thư. Dữ liệu đã reset. | 1. Chuyển đến tab "Thành viên". 2. Nhấn nút **Thêm thành viên**. 3. Nhập họ tên `Test User`. 4. Nhập email `user@domain` (không có dấu `.` trong domain). 5. Nhập SĐT `0901234567`. 6. Nhấn nút **Tạo** / **Lưu**. | Email: `user@domain` (BVA: biên hợp lệ/không hợp lệ) | Không tạo. Hiển thị thông báo lỗi email không hợp lệ. Theo SRS REQ-07: email phải có `@` VÀ dấu `.` trong domain. | REQ-07 | BVA |
-| TC-24 | Thêm thành viên — Email đã tồn tại | Đã đăng nhập bằng Thủ thư. Dữ liệu đã reset. | 1. Chuyển đến tab "Thành viên". 2. Nhấn nút **Thêm thành viên**. 3. Nhập họ tên `Trùng Email`. 4. Nhập email `ba.nguyen@email.com` (đã tồn tại). 5. Nhập SĐT `0901234567`. 6. Nhấn nút **Tạo** / **Lưu**. | Email: `ba.nguyen@email.com` (đã tồn tại) | Không tạo. Hiển thị thông báo lỗi email đã tồn tại. | REQ-07 | EP |
-
-### REQ-08: Tra cứu phiếu mượn
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-25 | Thủ thư xem tất cả phiếu mượn | Đã đăng nhập bằng Thủ thư (`librarian@library.com`). Dữ liệu đã reset. | 1. Chuyển đến tab "Mượn / Trả". 2. Tra cứu phiếu mượn. | N/A | Hiển thị tất cả 5 phiếu mượn: BR001–BR005. Mỗi phiếu hiển thị: mã phiếu, sách mượn, ngày mượn, hạn trả, trạng thái. | REQ-08 | EP |
-| TC-26 | Thành viên chỉ xem phiếu mượn của mình | Đã đăng nhập bằng MEM002 (`ba.nguyen@email.com`). Dữ liệu đã reset. | 1. Chuyển đến tab "Mượn / Trả". 2. Xem "Phiếu mượn của tôi". | N/A | Hiển thị chỉ phiếu mượn của MEM002: BR001 (BOOK003, Đang mượn) và BR004 (BOOK005, Đã trả). Không hiển thị phiếu của thành viên khác. | REQ-08 | EP |
-| TC-27 | Thành viên không xem được phiếu mượn của người khác | Đã đăng nhập bằng MEM002 (`ba.nguyen@email.com`). Dữ liệu đã reset. | 1. Chuyển đến tab "Mượn / Trả". 2. Thử tra cứu phiếu mượn theo mã thành viên MEM003 hoặc MEM006. | Mã thành viên: MEM003 hoặc MEM006 | Không hiển thị phiếu mượn của MEM003/MEM006. Theo SRS REQ-08: thành viên KHÔNG được xem phiếu mượn của thành viên khác. | REQ-08 | EP |
-
-### REQ-07 (bổ sung): Kỹ thuật EP — Lọc theo thể loại không phân biệt hoa/thường
-
-| Mã TC | Mục tiêu kiểm thử | Tiền điều kiện | Bước thực hiện | Dữ liệu đầu vào | Kết quả mong đợi | REQ | Kỹ thuật |
-|-------|-------------------|---------------|---------------|-----------------|------------------|-----|---------|
-| TC-28 | Lọc sách theo thể loại — Không phân biệt hoa/thường | Đã đăng nhập, đang ở tab "Sách" | 1. Nhập hoặc chọn thể loại `"công nghệ"` (chữ thường) trong bộ lọc. | Thể loại: `"công nghệ"` (chữ thường) | Hiển thị kết quả giống lọc "Công nghệ": 8 sách thể loại Công nghệ (BOOK001, 002, 003, 005, 008, 009, 010, 011). Lọc phải KHÔNG phân biệt hoa/thường theo SRS REQ-03. | REQ-03 | BVA |
+> **Note**: Rules R4, R6, R9–R18 overlap with already-tested rules (R3, R5, R7, R13). Only 6 TCs are needed to cover all 18 rules.
 
 ---
 
-## Tổng hợp
+## Step 3: Test Cases
 
-| Nhóm chức năng | Số TC | REQ phủ | Kỹ thuật IDM áp dụng |
+### REQ-01: Login
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-01 | Successful login — Librarian | Login page open, data reset | 1. Enter email `librarian@library.com`. 2. Enter password `admin123`. 3. Click **Login**. | Email: `librarian@library.com`, PW: `admin123` | Redirected to home page. AppBar displays name "Nguyen Thu Thu" and role "Librarian". | REQ-01 | EP |
+| TC-02 | Failed login — Email not found | Login page open | 1. Enter email `nobody@test.com`. 2. Enter password `anything`. 3. Click **Login**. | Email: `nobody@test.com`, PW: `anything` | Page does not change. Error message: "Member not found". | REQ-01 | EP |
+| TC-03 | Failed login — Wrong password | Login page open | 1. Enter email `ba.nguyen@email.com`. 2. Enter password `wrongpassword`. 3. Click **Login**. | Email: `ba.nguyen@email.com`, PW: `wrongpassword` | Page does not change. Error message: "Incorrect password". | REQ-01 | EP |
+| TC-04 | Failed login — Both fields empty | Login page open | 1. Leave email field empty. 2. Leave password field empty. 3. Click **Login**. | Email: `""`, PW: `""` | Page does not change. Error message: "Please enter email and password". | REQ-01 | EP |
+
+### REQ-02: View Book List
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-05 | View book list — Both roles can view | Logged in (try Librarian and Member separately) | 1. Login as Librarian → go to "Books" tab. 2. Logout. 3. Login as Member (`ba.nguyen@email.com`) → go to "Books" tab. | N/A | Both times show 20 books. Each book shows: title, author, genre, publication year, status (Available / Borrowed). | REQ-02 | EP |
+| TC-06 | Real-time book status update after borrowing | Logged in as MEM002 (`ba.nguyen@email.com`). Data reset. | 1. Go to "Books" tab. Note BOOK001 status "Available". 2. Borrow BOOK001. 3. Go back to "Books" tab. Check BOOK001 status. | Book: BOOK001 | After step 2: BOOK001 changes to "Borrowed". Update appears immediately without page refresh. | REQ-02 | EP |
+
+### REQ-03: Search & Filter Books
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-07 | Search by book title — Results found | Logged in, on "Books" tab | 1. Enter keyword `"Flutter"` in search box. | Keyword: `"Flutter"` | Shows book "Lap trinh Flutter co ban" (BOOK001, Nguyen Minh Duc, Technology, 2023). | REQ-03 | EP |
+| TC-08 | Search by author — Results found | Logged in, on "Books" tab | 1. Enter keyword `"Nguyen Minh Duc"` in search box. | Keyword: `"Nguyen Minh Duc"` | Shows 2 books by Nguyen Minh Duc: BOOK001 and BOOK009. | REQ-03 | EP |
+| TC-09 | Search — No results found | Logged in, on "Books" tab | 1. Enter keyword `"xyz_not_exist"` in search box. | Keyword: `"xyz_not_exist"` | Empty list. Message: "No books found". | REQ-03 | EP |
+| TC-10 | Case-insensitive search | Logged in, on "Books" tab | 1. Enter `"flutter"` (lowercase). 2. Clear, enter `"FLUTTER"` (uppercase). | Keywords: `"flutter"`, `"FLUTTER"` | Both show same result as `"Flutter"` — BOOK001. Search is case-insensitive per SRS REQ-03. | REQ-03 | BVA |
+| TC-11 | Filter books by genre | Logged in, on "Books" tab | 1. Select genre "Technology" in filter. | Genre: `"Technology"` | Shows 8 Technology books: BOOK001, BOOK002, BOOK003, BOOK005, BOOK008, BOOK009, BOOK010, BOOK011. | REQ-03 | EP |
+
+### REQ-04: Borrow Book
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-12 | Successful borrow — Available book, Active member (DT-R1) | Logged in as MEM002 (`ba.nguyen@email.com`, Active). Data reset. | 1. Go to "Books" tab. 2. Select BOOK004 (Available). 3. Click **Borrow**. | Member: MEM002, Book: BOOK004 | Borrow successful. New borrow record created, due date = borrow date + 14 days. BOOK004 changes to "Borrowed". MEM002's borrowed count increases to 2. | REQ-04 | EP, DT-R1 |
+| TC-13 | Borrow already-borrowed book — Rejected (DT-R7) | Logged in. Data reset (BOOK003 currently borrowed by MEM002). | 1. Go to "Books" tab. 2. Find BOOK003 (status "Borrowed"). 3. Click **Borrow**. | Book: BOOK003 (Borrowed) | Borrow rejected. Error message describing book is not available. | REQ-04 | EP, DT-R7 |
+| TC-14 | Borrow lost book — Rejected (DT-R13) | Logged in. Data reset (BOOK007 status "Lost"). | 1. Go to "Books" tab. 2. Find BOOK007 (Lost). 3. Click **Borrow**. | Book: BOOK007 (Lost) | Borrow rejected. Error message describing book is not available. | REQ-04 | EP, DT-R13 |
+| TC-15 | Suspended member borrows book — Rejected (DT-R3) | Logged in as Librarian. Data reset. | 1. Go to "Books" tab. 2. Select BOOK001 (Available). 3. Borrow for MEM004 (Le Can Cu, Suspended). | Member: MEM004 (Suspended), Book: BOOK001 | Borrow rejected. Error message contains "suspended" — must NOT show "expired" (per SRS: must describe correct reason). | REQ-04 | EP, DT-R3 |
+| TC-16 | Expired member borrows book — Rejected (DT-R5) | Logged in as Librarian. Data reset. | 1. Go to "Books" tab. 2. Select BOOK001 (Available). 3. Borrow for MEM005 (Pham Trung Binh, Expired). | Member: MEM005 (Expired), Book: BOOK001 | Borrow rejected. Error message contains "expired" — must NOT show "suspended" (per SRS: must describe correct reason). | REQ-04 | EP, DT-R5 |
+| TC-17 | Borrow book — Maximum 3-book limit (BVA boundary, DT-R2) | Logged in as MEM003 (`dam.tran@email.com`, Active, currently borrowing 0 books). Data reset. | 1. Borrow BOOK001 → note (borrowing 1). 2. Borrow BOOK002 → note (borrowing 2). 3. Borrow BOOK004 → note (borrowing 3). 4. Borrow BOOK005 → attempt 4th book. | Member: MEM003, BVA boundary: 2 books → 3 books | Steps 1–3: Borrow successful. Step 4: Rejected, error message "Maximum borrow limit reached (3 books)". | REQ-04 | BVA, DT-R2 |
+
+### REQ-05: Return Book
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-18 | Return book on time — Status updated | Logged in as MEM006 (`biet.hoang@email.com`). Data reset (MEM006 borrowing BOOK013 via BR003). | 1. Go to "Borrow / Return" tab. 2. Select borrow record BR003. 3. Click **Return**. | Record: BR003, Book: BOOK013 | Return successful. BOOK013 changes to "Available". BR003 changes to "Returned". No overdue warning shown. | REQ-05 | EP |
+| TC-19 | Return overdue book — Warning displayed | Logged in as MEM002 (`ba.nguyen@email.com`). Data reset. Librarian has clicked "Check Overdue" (BR001 marked overdue). | 1. Go to "Borrow / Return" tab. 2. Select borrow record BR001 (overdue). 3. Click **Return**. | Record: BR001, Book: BOOK003 | Overdue warning displayed clearly before return. After confirmation: return successful, BOOK003 → "Available", BR001 → "Returned". | REQ-05 | EP |
+
+### REQ-06: Overdue Handling
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-20 | Librarian checks overdue — Records marked overdue | Logged in as Librarian (`librarian@library.com`). Data reset (BR001 dueDate 15/09/2024 ≤ today). | 1. Go to "Borrow / Return" tab. 2. Click **Check Overdue**. 3. Check BR001 status. | N/A | BR001 (dueDate 15/09/2024 ≤ current date) is marked "Overdue". Records with dueDate > today are not marked. | REQ-06 | EP |
+| TC-21 | Member views own overdue records | Logged in as MEM002 (`ba.nguyen@email.com`). Librarian has clicked "Check Overdue". | 1. Go to "Borrow / Return" tab. 2. View "My borrow records". | N/A | MEM002 sees BR001 (BOOK003) with status "Overdue". Does not see records of other members. | REQ-06 | EP |
+
+### REQ-07: Member Management
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-22 | Add new valid member | Logged in as Librarian (`librarian@library.com`). Data reset. | 1. Go to "Members" tab. 2. Click **Add Member**. 3. Enter full name `Nguyen Van Moi`. 4. Enter email `nguyenvanmoi@email.com`. 5. Enter phone `0901234567`. 6. Click **Create** / **Save**. | Name: `Nguyen Van Moi`, Email: `nguyenvanmoi@email.com`, Phone: `0901234567` | Created successfully. New member appears in list with status "Active". | REQ-07 | EP |
+| TC-23 | Add member — Invalid email, missing dot in domain (BVA) | Logged in as Librarian. Data reset. | 1. Go to "Members" tab. 2. Click **Add Member**. 3. Enter name `Test User`. 4. Enter email `user@domain` (no `.` in domain). 5. Enter phone `0901234567`. 6. Click **Create** / **Save**. | Email: `user@domain` (BVA: valid/invalid boundary) | Not created. Error message: invalid email. Per SRS REQ-07: email must have `@` AND `.` in domain. | REQ-07 | BVA |
+| TC-24 | Add member — Email already exists | Logged in as Librarian. Data reset. | 1. Go to "Members" tab. 2. Click **Add Member**. 3. Enter name `Duplicate Email`. 4. Enter email `ba.nguyen@email.com` (already exists). 5. Enter phone `0901234567`. 6. Click **Create** / **Save**. | Email: `ba.nguyen@email.com` (already exists) | Not created. Error message: email already exists. | REQ-07 | EP |
+
+### REQ-08: Borrow Record Lookup
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-25 | Librarian views all borrow records | Logged in as Librarian (`librarian@library.com`). Data reset. | 1. Go to "Borrow / Return" tab. 2. Look up borrow records. | N/A | Shows all 5 borrow records: BR001–BR005. Each record shows: record ID, book borrowed, borrow date, due date, status. | REQ-08 | EP |
+| TC-26 | Member views only own borrow records | Logged in as MEM002 (`ba.nguyen@email.com`). Data reset. | 1. Go to "Borrow / Return" tab. 2. View "My borrow records". | N/A | Shows only MEM002's records: BR001 (BOOK003, Borrowing) and BR004 (BOOK005, Returned). Other members' records not shown. | REQ-08 | EP |
+| TC-27 | Member cannot view another member's borrow records | Logged in as MEM002 (`ba.nguyen@email.com`). Data reset. | 1. Go to "Borrow / Return" tab. 2. Try to look up records by member ID MEM003 or MEM006. | Member ID: MEM003 or MEM006 | MEM003/MEM006's borrow records not displayed. Per SRS REQ-08: members must NOT view other members' borrow records. | REQ-08 | EP |
+
+### REQ-03 (additional): Case-Insensitive Genre Filter
+
+| TC ID | Test Objective | Precondition | Steps | Input Data | Expected Result | REQ | Technique |
+|-------|----------------|--------------|-------|------------|-----------------|-----|-----------|
+| TC-28 | Filter books by genre — Case-insensitive | Logged in, on "Books" tab | 1. Enter or select genre `"technology"` (lowercase) in filter. | Genre: `"technology"` (lowercase) | Shows same result as filtering "Technology": 8 Technology books (BOOK001, 002, 003, 005, 008, 009, 010, 011). Filter must be case-insensitive per SRS REQ-03. | REQ-03 | BVA |
+
+---
+
+## Summary
+
+| Feature Group | TC Count | REQ Covered | IDM Technique Applied |
 |----------------|-------|---------|----------------------|
-| Đăng nhập | 4 | REQ-01 | EP (3 phân vùng: email đúng/sai/rỗng, MK đúng/sai/rỗng) |
-| Xem danh sách sách | 2 | REQ-02 | EP (vai trò Thủ thư/Thành viên, real-time update) |
-| Tìm kiếm & Lọc | 5 | REQ-03 | EP (có/không kết quả), BVA (hoa/thường boundary) |
-| Mượn sách | 6 | REQ-04 | EP (trạng thái sách/TV), BVA (giới hạn 3 sách), Decision Table (R1–R13) |
-| Trả sách | 2 | REQ-05 | EP (đúng hạn/quá hạn) |
-| Xử lý quá hạn | 2 | REQ-06 | EP (có/không quá hạn, vai trò kiểm tra) |
-| Quản lý thành viên | 3 | REQ-07 | EP (email hợp lệ/trùng), BVA (email biên hợp lệ/không hợp lệ) |
-| Tra cứu phiếu mượn | 3 | REQ-08 | EP (Thủ thư xem tất cả/Thành viên chỉ xem mình) |
-| Lọc không phân biệt hoa/thường | 1 | REQ-03 | BVA (chữ thường boundary) |
-| **Tổng** | **28** | **REQ-01 → REQ-08** | **EP + BVA + Decision Table** |
+| Login | 4 | REQ-01 | EP (3 partitions: correct/wrong/empty email, correct/wrong/empty password) |
+| View Book List | 2 | REQ-02 | EP (Librarian/Member role, real-time update) |
+| Search & Filter | 5 | REQ-03 | EP (results found/not found), BVA (case boundary) |
+| Borrow Book | 6 | REQ-04 | EP (book/member status), BVA (3-book limit), Decision Table (R1–R13) |
+| Return Book | 2 | REQ-05 | EP (on time/overdue) |
+| Overdue Handling | 2 | REQ-06 | EP (overdue/not overdue, role checking) |
+| Member Management | 3 | REQ-07 | EP (valid/duplicate email), BVA (valid/invalid email boundary) |
+| Borrow Record Lookup | 3 | REQ-08 | EP (Librarian sees all / Member sees own only) |
+| Case-insensitive Filter | 1 | REQ-03 | BVA (lowercase boundary) |
+| **Total** | **28** | **REQ-01 → REQ-08** | **EP + BVA + Decision Table** |
