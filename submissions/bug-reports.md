@@ -9,11 +9,16 @@
 | **Nhóm** | Nhóm 11 |
 | **Ngày báo cáo** | 06/06/2026 |
 
+**Môi trường:**
+- Trình duyệt: Chrome (bản mới nhất)
+- Hệ điều hành: Windows 11
+- Ngôn ngữ giao diện: Tiếng Việt
+
 > **📌 Lưu ý**: TC-19 (không hiển thị cảnh báo quá hạn khi trả sách) và việc "Thủ thư không có nút Mượn" là **tính năng chưa triển khai** (unimplemented features), không phải lỗi code. Do đó, không tạo bug report cho các trường hợp này.
 
 ---
 
-## BUG-01
+## BUG-01: Mượn được sách thứ 4 — vượt giới hạn tối đa 3 sách/thành viên (lỗi off-by-one: `>` thay vì `>=`)
 
 | Thuộc tính | Chi tiết |
 |-----------|---------|
@@ -24,14 +29,6 @@
 | **Người phát hiện** | Nhóm 11 |
 | **Ngày phát hiện** | 06/06/2026 |
 | **Trạng thái** | Open |
-
-**Tiêu đề:**
-Mượn được sách thứ 4 — vượt giới hạn tối đa 3 sách/thành viên (lỗi off-by-one: `>` thay vì `>=`)
-
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
 
 **Điều kiện tiên quyết:**
 Đã đăng nhập bằng tài khoản thành viên đang hoạt động với 0 sách đang mượn. Dữ liệu đã reset (F5).
@@ -62,7 +59,7 @@ Sửa điều kiện kiểm tra giới hạn mượn từ `if (currentBorrowCoun
 
 ---
 
-## BUG-02
+## BUG-02: Thành viên "Tạm ngưng" mượn sách nhận thông báo lỗi "hết hạn" thay vì "tạm ngưng"
 
 | Thuộc tính | Chi tiết |
 |-----------|---------|
@@ -73,14 +70,6 @@ Sửa điều kiện kiểm tra giới hạn mượn từ `if (currentBorrowCoun
 | **Người phát hiện** | Nhóm 11 |
 | **Ngày phát hiện** | 06/06/2026 |
 | **Trạng thái** | Open |
-
-**Tiêu đề:**
-Thành viên "Tạm ngưng" mượn sách nhận thông báo lỗi "hết hạn" thay vì "tạm ngưng"
-
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
 
 **Điều kiện tiên quyết:**
 Trang đăng nhập đã mở, dữ liệu đã reset (F5).
@@ -109,7 +98,7 @@ Kiểm tra lại logic xử lý thông báo lỗi trong hàm mượn sách. Đ�
 
 ---
 
-## BUG-03
+## BUG-03: Email hợp lệ bị từ chối với thông báo "Email không hợp lệ" khi thêm thành viên mới
 
 | Thuộc tính | Chi tiết |
 |-----------|---------|
@@ -120,14 +109,6 @@ Kiểm tra lại logic xử lý thông báo lỗi trong hàm mượn sách. Đ�
 | **Người phát hiện** | Nhóm 11 |
 | **Ngày phát hiện** | 06/06/2026 |
 | **Trạng thái** | Open |
-
-**Tiêu đề:**
-Email hợp lệ bị từ chối với thông báo "Email không hợp lệ" khi thêm thành viên mới
-
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
 
 **Điều kiện tiên quyết:**
 Đã đăng nhập bằng Thủ thư (`librarian@library.com` / `admin123`). Dữ liệu đã reset (F5).
@@ -157,7 +138,7 @@ Kiểm tra lại logic xác thực email trong form thêm thành viên. Biểu t
 
 ---
 
-## BUG-04
+## BUG-04: Email không hợp lệ `user@domain` (thiếu dấu chấm trong domain) được chấp nhận khi thêm thành viên
 
 | Thuộc tính | Chi tiết |
 |-----------|---------|
@@ -168,14 +149,6 @@ Kiểm tra lại logic xác thực email trong form thêm thành viên. Biểu t
 | **Người phát hiện** | Nhóm 11 |
 | **Ngày phát hiện** | 06/06/2026 |
 | **Trạng thái** | Open |
-
-**Tiêu đề:**
-Email không hợp lệ `user@domain` (thiếu dấu chấm trong domain) được chấp nhận khi thêm thành viên
-
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
 
 **Điều kiện tiên quyết:**
 Đã đăng nhập bằng Thủ thư. Dữ liệu đã reset (F5).
@@ -205,7 +178,7 @@ Sửa logic xác thực email — đảo ngược điều kiện kiểm tra. Đ�
 
 ---
 
-## BUG-05
+## BUG-05: Email đã tồn tại hiển thị thông báo sai "Email không hợp lệ" thay vì "Email đã tồn tại"
 
 | Thuộc tính | Chi tiết |
 |-----------|---------|
@@ -216,14 +189,6 @@ Sửa logic xác thực email — đảo ngược điều kiện kiểm tra. Đ�
 | **Người phát hiện** | Nhóm 11 |
 | **Ngày phát hiện** | 06/06/2026 |
 | **Trạng thái** | Open |
-
-**Tiêu đề:**
-Email đã tồn tại hiển thị thông báo sai "Email không hợp lệ" thay vì "Email đã tồn tại"
-
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
 
 **Điều kiện tiên quyết:**
 Đã đăng nhập bằng Thủ thư. Dữ liệu đã reset (F5).
@@ -253,7 +218,7 @@ Tách riêng 2 điều kiện kiểm tra: (1) Kiểm tra định dạng email h�
 
 ---
 
-## BUG-06
+## BUG-06: Thành viên xem được phiếu mượn của thành viên khác — vi phạm quyền truy cập SRS REQ-08
 
 | Thuộc tính | Chi tiết |
 |-----------|---------|
@@ -264,14 +229,6 @@ Tách riêng 2 điều kiện kiểm tra: (1) Kiểm tra định dạng email h�
 | **Người phát hiện** | Nhóm 11 |
 | **Ngày phát hiện** | 06/06/2026 |
 | **Trạng thái** | Open |
-
-**Tiêu đề:**
-Thành viên xem được phiếu mượn của thành viên khác — vi phạm quyền truy cập SRS REQ-08
-
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
 
 **Điều kiện tiên quyết:**
 Đã đăng nhập bằng tài khoản thành viên MEM002. Dữ liệu đã reset (F5).
@@ -305,7 +262,7 @@ Thêm kiểm tra quyền truy cập trong hàm tra cứu phiếu mượn: khi ng
 
 ---
 
-## BUG-07
+## BUG-07: Lọc sách theo thể loại "công nghệ" (chữ thường) trả về 0 kết quả — bộ lọc phân biệt hoa/thường (case-sensitive)
 
 | Thuộc tính | Chi tiết |
 |-----------|---------|
@@ -316,14 +273,6 @@ Thêm kiểm tra quyền truy cập trong hàm tra cứu phiếu mượn: khi ng
 | **Người phát hiện** | Nhóm 11 |
 | **Ngày phát hiện** | 06/06/2026 |
 | **Trạng thái** | Open |
-
-**Tiêu đề:**
-Lọc sách theo thể loại "công nghệ" (chữ thường) trả về 0 kết quả — bộ lọc phân biệt hoa/thường (case-sensitive)
-
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
 
 **Điều kiện tiên quyết:**
 Đã đăng nhập, đang ở tab **Sách**. Dữ liệu đã reset (F5).
