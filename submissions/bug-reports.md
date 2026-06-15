@@ -55,7 +55,7 @@ Bước 4–6: Mượn thành công. Bước 7: Hệ thống **cho phép mượn
 Vi phạm nghiêm trọng quy tắc nghiệp vụ cốt lõi (BR-01): giới hạn tối đa 3 sách/thành viên. Cho phép thành viên mượn không giới hạn, gây mất kiểm soát số lượng sách mỗi người. Nguyên nhân khả thi: code sử dụng toán tử `>` thay vì `>=` khi so sánh số sách đang mượn với giới hạn (off-by-one error).
 
 **Minh chứng:**
-*(Đính kèm ảnh chụp màn hình hiển thị MEM003 đang mượn 4 sách)*
+![BUG-01: MEM003 đang mượn 4 sách](evidences/BUG-01.png)
 
 **Đề xuất xử lý:**
 Sửa điều kiện kiểm tra giới hạn mượn từ `if (currentBorrowCount > maxBooksPerMember)` sang `if (currentBorrowCount >= maxBooksPerMember)`. Khi số sách đang mượn = 3 (giới hạn tối đa), phải từ chối mượn thêm.
@@ -102,7 +102,7 @@ Hệ thống từ chối mượn sách nhưng hiển thị thông báo **"Thành
 Thành viên bị tạm ngưng nhận thông báo sai, gây nhầm lẫn về lý do từ chối. Vi phạm quy tắc SRS REQ-04 yêu cầu thông báo lỗi phải mô tả đúng lý do. Thủ thư và thành viên không xác định được trạng thái tài khoản thực tế để có hành động khắc phục phù hợp.
 
 **Minh chứng:**
-*(Đính kèm ảnh chụp màn hình hiển thị thông báo lỗi "hết hạn" khi MEM004 mượn sách)*
+![BUG-02: Thông báo "hết hạn" khi MEM004 mượn sách](evidences/BUG-02.png)
 
 **Đề xuất xử lý:**
 Kiểm tra lại logic xử lý thông báo lỗi trong hàm mượn sách. Đảm bảo khi trạng thái thành viên là "Tạm ngưng" (suspended), thông báo lỗi phải chứa từ "tạm ngưng". Có thể code đang gộp chung 2 trường hợp "Tạm ngưng" và "Hết hạn" vào cùng 1 nhánh thông báo.
@@ -150,7 +150,7 @@ Hệ thống từ chối tạo thành viên mới. Hiển thị thông báo lỗ
 Không thể thêm bất kỳ thành viên mới nào có email hợp lệ — **chức năng quản lý thành viên hoàn toàn không sử dụng được**. Đây là lỗi nghiêm trọng làm tê liệt toàn bộ tính năng REQ-07. Kết hợp với BUG-04, logic xác thực email bị **đảo ngược hoàn toàn**: hợp lệ → từ chối, không hợp lệ → chấp nhận. Nguyên nhân khả thi: logic xác thực email bị đảo ngược hoặc sai biểu thức chính quy (regex).
 
 **Minh chứng:**
-*(Đính kèm ảnh chụp màn hình hiển thị thông báo "Email không hợp lệ" với email hợp lệ)*
+![BUG-03: Thông báo "Email không hợp lệ" với email hợp lệ](evidences/BUG-03.png)
 
 **Đề xuất xử lý:**
 Kiểm tra lại logic xác thực email trong form thêm thành viên. Biểu thức xác thực có thể bị sai hoặc bị đảo ngược — chấp nhận email không hợp lệ (thiếu dấu chấm domain) nhưng từ chối email hợp lệ. Sửa regex/logic kiểm tra email để đảm bảo: email có `@` VÀ có `.` trong phần domain thì hợp lệ.
@@ -198,7 +198,7 @@ Hệ thống **chấp nhận** email `user@domain`, tạo thành viên mới th�
 Cho phép tạo thành viên với email không hợp lệ, vi phạm quy tắc xác thực SRS REQ-07 và BR-08. Dữ liệu thành viên bị sai — email không hợp lệ có thể gây lỗi khi cần gửi thông báo hoặc liên lạc. Kết hợp với BUG-03, logic xác thực email bị **đảo ngược hoàn toàn**: hợp lệ → từ chối, không hợp lệ → chấp nhận.
 
 **Minh chứng:**
-*(Đính kèm ảnh chụp màn hình hiển thị tạo thành viên thành công với email `user@domain`)*
+![BUG-04: Tạo thành viên thành công với email user@domain](evidences/BUG-04.png)
 
 **Đề xuất xử lý:**
 Sửa logic xác thực email — đảo ngược điều kiện kiểm tra. Đảm bảo email `user@domain` (thiếu dấu `.` trong domain) bị từ chối, và email `nguyenvanmoi@email.com` (có đủ `@` và `.` trong domain) được chấp nhận. Có thể cần viết lại biểu thức regex xác thực email hoàn toàn.
@@ -246,7 +246,7 @@ Hệ thống từ chối tạo thành viên nhưng hiển thị thông báo **"E
 Người dùng (Thủ thư) nhận thông báo sai — không biết lý do thực tế là email đã tồn tại, có thể hiểu nhầm rằng định dạng email sai và thử nhập lại email khác thay vì hiểu rằng cần dùng email mới. Gây nhầm lẫn và mất thời gian.
 
 **Minh chứng:**
-*(Đính kèm ảnh chụp màn hình hiển thị thông báo "Email không hợp lệ" khi nhập email đã tồn tại)*
+![BUG-05: Thông báo "Email không hợp lệ" khi nhập email đã tồn tại](evidences/BUG-05.png)
 
 **Đề xuất xử lý:**
 Tách riêng 2 điều kiện kiểm tra: (1) Kiểm tra định dạng email hợp lệ → thông báo "Email không hợp lệ", (2) Kiểm tra email đã tồn tại → thông báo "Email đã tồn tại". Đảm bảo kiểm tra trùng email được thực hiện và trả về thông báo phù hợp trước khi kiểm tra định dạng.
@@ -296,7 +296,9 @@ Tab mặc định hiển thị đúng (chỉ phiếu của MEM002). Tuy nhiên, 
 Vi phạm nghiêm trọng quy tắc bảo mật phiếu mượn (BR-07 và SRS REQ-08). Thành viên A có thể xem toàn bộ lịch sử mượn/trả của thành viên B, bao gồm thông tin sách mượn, ngày mượn, trạng thái — đây là rò rỉ dữ liệu cá nhân. Lỗi bảo mật có mức độ ảnh hưởng cao trong hệ thống thực tế.
 
 **Minh chứng:**
-*(Đính kèm ảnh chụp màn hình hiển thị MEM002 xem được phiếu mượn của MEM003 và MEM006)*
+![BUG-06: MEM002 xem phiếu mượn của MEM003](evidences/BUG-06_MEM003.png)
+
+![BUG-06: MEM002 xem phiếu mượn của MEM006](evidences/BUG-06_MEM006.png)
 
 **Đề xuất xử lý:**
 Thêm kiểm tra quyền truy cập trong hàm tra cứu phiếu mượn: khi người dùng đăng nhập là "Thành viên", chỉ cho phép tra cứu với chính mã thành viên của họ. Nếu nhập mã thành viên khác → từ chối truy cập hoặc tự động chuyển về xem phiếu của chính mình. Chỉ "Thủ thư" mới có quyền tra cứu mọi thành viên.
@@ -342,7 +344,7 @@ Hiển thị thông báo **"Không tìm thấy sách nào"** — 0 kết quả. 
 Người dùng nhập thể loại bằng chữ thường (phổ biến trong sử dụng thực tế) sẽ không tìm thấy sách dù thể loại đó tồn tại. Vi phạm yêu cầu case-insensitive của SRS REQ-03 và BR-10. Gây trải nghiệm người dùng kém — tưởng thư viện không có sách thể loại đó.
 
 **Minh chứng:**
-*(Đính kèm ảnh chụp màn hình hiển thị "Không tìm thấy sách nào" khi lọc "công nghệ" chữ thường)*
+![BUG-07: "Không tìm thấy sách nào" khi lọc "công nghệ" chữ thường](evidences/BUG-07.png)
 
 **Đề xuất xử lý:**
 Sửa logic lọc thể loại: so sánh giá trị lọc với thể loại sách sau khi đã chuyển cả 2 về cùng dạng (chữ thường hoặc chữ hoa) trước khi so sánh. Ví dụ: `filter.toLowerCase() === book.genre.toLowerCase()`. Đảm bảo bộ lọc hoạt động case-insensitive như yêu cầu SRS.
