@@ -34,7 +34,7 @@
 | TC-16 | Borrow Book | Reject MEM005 (Expired), message contains "expired" | Rejects borrowing, displays **"Member has expired. Cannot borrow books."** — correct per SRS | Pass | | |
 | TC-17 | Borrow Book | Steps 1-3: borrow successful; Step 4: rejected, 3-book limit | Steps 1-3: borrow successful. Step 4: borrowing 4th book **still succeeds**, not rejected — member currently borrowing 4 books | **Fail** | ![TC-17](evidences/BUG-01.png) | BUG-01 |
 | TC-18 | Return Book | Return BOOK013 successful, book → "Available", no warning | Return successful, BOOK013 → "Available", no overdue warning (book not overdue) | Pass | | |
-| TC-19 | Return Book | Overdue warning when returning BOOK003 (BR001) | Return successful, BOOK003 → "Available". **No overdue warning displayed** | **Fail** | | — *(unimplemented)* |
+| TC-19 | Return Book | Overdue warning when returning BOOK003 (BR001) | Return successful, BOOK003 → "Available". **No overdue warning displayed** | **Fail** | ![TC-19](evidences/TC-19_unimplemented.png) | — *(unimplemented)* |
 | TC-20 | Overdue | BR001 + BR003 marked "Overdue" after Librarian clicks check | BR001 and BR003 both marked "Overdue" (correct: both have dueDate ≤ today) | Pass | | |
 | TC-21 | Overdue | MEM002 sees BR001 overdue, does not see other members' records | MEM002 sees BR001 "Overdue", default tab shows only own records | Pass | | |
 | TC-22 | Member Management | Create new member successfully (valid email) | Valid email `nguyenvanmoi@email.com` rejected with message **"Invalid email"** | **Fail** | ![TC-22](evidences/BUG-03.png) | BUG-03 |
