@@ -5,7 +5,7 @@
 
 | Information | |
 |---|---|
-| **Team** | Team 11 |
+| **Team** | Group 11 |
 | **Execution Date** | 06/06/2026 |
 | **Browser** | Chrome (latest version) |
 | **Operating System** | Windows 11 |

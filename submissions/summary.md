@@ -8,7 +8,7 @@
 
 | Item | Information |
 |------|-------------|
-| **Team** | Team 11 |
+| **Team** | Group 11 |
 | **Class** | 252ICT2012.11 |
 | **Report Date** | 06/06/2026 |
 | **System Under Test** | https://stqa.rbc.vn — v1.0 |

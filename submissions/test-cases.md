@@ -2,7 +2,7 @@
 
 | Information | |
 |---|---|
-| **Team** | Team 11 |
+| **Team** | Group 11 |
 | **Date Created** | 27/05/2026 |
 | **System** | https://stqa.rbc.vn |
 | **Reference** | SRS v1.0 |

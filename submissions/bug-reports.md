@@ -6,7 +6,7 @@
 
 | Information | |
 |---|---|
-| **Team** | Team 11 |
+| **Team** | Group 11 |
 | **Report Date** | 06/06/2026 |
 | **GitHub Repository** | https://github.com/USTH-STQA-2026/stqa-manual-testing-stqa_group_11 |
 
