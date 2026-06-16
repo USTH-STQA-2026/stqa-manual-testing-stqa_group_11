@@ -30,20 +30,20 @@
 | TC-12 | Borrow Book | Borrow BOOK004 successful, new record created, due date +14 days | Borrow successful, new record created, due date = borrow date + 14 days (year 2026 correct) | Pass | | |
 | TC-13 | Borrow Book | Reject borrowing BOOK003 (currently borrowed), no borrow button | No borrow button on "Borrowed" book | Pass | | |
 | TC-14 | Borrow Book | Reject borrowing BOOK007 (Lost), no borrow button | No borrow button on "Lost" book | Pass | | |
-| TC-15 | Borrow Book | Reject MEM004 (Suspended), message contains "suspended" | Rejects borrowing but displays **"Member has expired. Cannot borrow books."** instead of "suspended" | **Fail** | ![TC-15](screenshots/BUG-02.png) | BUG-02 |
+| TC-15 | Borrow Book | Reject MEM004 (Suspended), message contains "suspended" | Rejects borrowing but displays **"Member has expired. Cannot borrow books."** instead of "suspended" | **Fail** | ![TC-15](../screenshots/BUG-02.png) | BUG-02 |
 | TC-16 | Borrow Book | Reject MEM005 (Expired), message contains "expired" | Rejects borrowing, displays **"Member has expired. Cannot borrow books."** — correct per SRS | Pass | | |
-| TC-17 | Borrow Book | Steps 1-3: borrow successful; Step 4: rejected, 3-book limit | Steps 1-3: borrow successful. Step 4: borrowing 4th book **still succeeds**, not rejected — member currently borrowing 4 books | **Fail** | ![TC-17](screenshots/BUG-01.png) | BUG-01 |
+| TC-17 | Borrow Book | Steps 1-3: borrow successful; Step 4: rejected, 3-book limit | Steps 1-3: borrow successful. Step 4: borrowing 4th book **still succeeds**, not rejected — member currently borrowing 4 books | **Fail** | ![TC-17](../screenshots/BUG-01.png) | BUG-01 |
 | TC-18 | Return Book | Return BOOK013 successful, book → "Available", no warning | Return successful, BOOK013 → "Available", no overdue warning (book not overdue) | Pass | | |
-| TC-19 | Return Book | Overdue warning when returning BOOK003 (BR001) | Return successful, BOOK003 → "Available". **No overdue warning displayed** | **Fail** | ![TC-19](screenshots/TC-19_unimplemented.png) | — *(unimplemented)* |
+| TC-19 | Return Book | Overdue warning when returning BOOK003 (BR001) | Return successful, BOOK003 → "Available". **No overdue warning displayed** | **Fail** | ![TC-19](../screenshots/TC-19_unimplemented.png) | — *(unimplemented)* |
 | TC-20 | Overdue | BR001 + BR003 marked "Overdue" after Librarian clicks check | BR001 and BR003 both marked "Overdue" (correct: both have dueDate ≤ today) | Pass | | |
 | TC-21 | Overdue | MEM002 sees BR001 overdue, does not see other members' records | MEM002 sees BR001 "Overdue", default tab shows only own records | Pass | | |
-| TC-22 | Member Management | Create new member successfully (valid email) | Valid email `nguyenvanmoi@email.com` rejected with message **"Invalid email"** | **Fail** | ![TC-22](screenshots/BUG-03.png) | BUG-03 |
-| TC-23 | Member Management | Error for invalid email (`user@domain` missing dot in domain) | Invalid email `user@domain` (missing `.` in domain) **accepted**, member created successfully | **Fail** | ![TC-23](screenshots/BUG-04.png) | BUG-04 |
-| TC-24 | Member Management | Error for existing email, message "Email already exists" | Rejected but shows wrong message **"Invalid email"** instead of "Email already exists" | **Fail** | ![TC-24](screenshots/BUG-05.png) | BUG-05 |
+| TC-22 | Member Management | Create new member successfully (valid email) | Valid email `nguyenvanmoi@email.com` rejected with message **"Invalid email"** | **Fail** | ![TC-22](../screenshots/BUG-03.png) | BUG-03 |
+| TC-23 | Member Management | Error for invalid email (`user@domain` missing dot in domain) | Invalid email `user@domain` (missing `.` in domain) **accepted**, member created successfully | **Fail** | ![TC-23](../screenshots/BUG-04.png) | BUG-04 |
+| TC-24 | Member Management | Error for existing email, message "Email already exists" | Rejected but shows wrong message **"Invalid email"** instead of "Email already exists" | **Fail** | ![TC-24](../screenshots/BUG-05.png) | BUG-05 |
 | TC-25 | Borrow Records | Librarian views all 5 records BR001–BR005 | Displays all 5 records: BR001, BR003 "Borrowing"; BR002, BR004, BR005 "Returned" | Pass | | |
 | TC-26 | Borrow Records | MEM002 only sees BR001 + BR004 (own records) | Only sees BR001 and BR004, does not see other members' records in default tab | Pass | | |
-| TC-27 | Borrow Records | MEM002 cannot view records of MEM003/MEM006 | MEM002 **can view** records of MEM003 (BR002, BR005) and MEM006 (BR003) when entering member ID — violates REQ-08 | **Fail** | ![TC-27a](screenshots/BUG-06_MEM003.png) ![TC-27b](screenshots/BUG-06_MEM006.png) | BUG-06 |
-| TC-28 | Filter Books | "technology" (lowercase) produces same results as "Technology" | Filtering "technology" (lowercase) returns **"No books found"** — 0 results. Filter is case-sensitive | **Fail** | ![TC-28](screenshots/BUG-07.png) | BUG-07 |
+| TC-27 | Borrow Records | MEM002 cannot view records of MEM003/MEM006 | MEM002 **can view** records of MEM003 (BR002, BR005) and MEM006 (BR003) when entering member ID — violates REQ-08 | **Fail** | ![TC-27a](../screenshots/BUG-06_MEM003.png) ![TC-27b](../screenshots/BUG-06_MEM006.png) | BUG-06 |
+| TC-28 | Filter Books | "technology" (lowercase) produces same results as "Technology" | Filtering "technology" (lowercase) returns **"No books found"** — 0 results. Filter is case-sensitive | **Fail** | ![TC-28](../screenshots/BUG-07.png) | BUG-07 |
 
 ---
 
@@ -54,7 +54,7 @@
 SRS requires the Librarian to have the right to "borrow books for members" (SRS Section 1). However, the system **does not display a Borrow button** when logged in as Librarian — this feature is not yet implemented (unimplemented feature). Therefore, TC-15 and TC-16 were executed by **logging in directly with the member account** (MEM004/MEM005) instead of through the Librarian.
 
 **Evidence:**
-![Librarian — no Borrow button on any book](screenshots/TC-Librarian_no_borrow_button.png)
+![Librarian — no Borrow button on any book](../screenshots/TC-Librarian_no_borrow_button.png)
 
 This execution method is still valid because:
 - SRS REQ-01 only checks email + password for login — does not require checking member status at the login step.
@@ -67,14 +67,14 @@ SRS REQ-05 requires displaying an overdue warning when returning an overdue book
 This is an **unimplemented feature**, not a code bug. TC-19 records Fail because the actual result does not match SRS, but **no bug report is created**.
 
 **Evidence:**
-![TC-19 — No overdue warning when returning overdue book](screenshots/TC-19_unimplemented.png)
+![TC-19 — No overdue warning when returning overdue book](../screenshots/TC-19_unimplemented.png)
 
 ### Note 3: Additional Finding — Unimplemented Feature
 
 When logged in as Librarian, the "Books" tab **does not display a Borrow button** on any book. The Librarian also **cannot create a borrow record** for a member from the "Borrow / Return" tab. Per SRS Section 1: the Librarian must have the right to "borrow/return books for members" → This is an **unimplemented feature**, not a code bug.
 
 **Evidence:**
-![Librarian — no Borrow button on any book](screenshots/TC-Librarian_no_borrow_button.png)
+![Librarian — no Borrow button on any book](../screenshots/TC-Librarian_no_borrow_button.png)
 
 ---
 

@@ -53,7 +53,7 @@ Steps 4–6: Borrow successful. Step 7: System **allows borrowing the 4th book**
 Serious violation of core business rule (BR-01): maximum 3 books/member limit. Allows members to borrow unlimited books, causing loss of control over the number of books per person. Probable cause: code uses operator `>` instead of `>=` when comparing current borrow count with the limit (off-by-one error).
 
 **Evidence:**
-![BUG-01: MEM003 currently borrowing 4 books](screenshots/BUG-01.png)
+![BUG-01: MEM003 currently borrowing 4 books](../screenshots/BUG-01.png)
 
 **Suggested Fix:**
 Change the borrow limit check condition from `if (currentBorrowCount > maxBooksPerMember)` to `if (currentBorrowCount >= maxBooksPerMember)`. When the number of books currently borrowed = 3 (maximum limit), further borrowing must be rejected.
@@ -92,7 +92,7 @@ System rejects borrowing but displays the message **"Member has expired. Cannot 
 Suspended members receive incorrect error messages, causing confusion about the reason for rejection. Violates SRS REQ-04 requirement that error messages must describe the correct reason. Librarians and members cannot determine the actual account status to take appropriate corrective action.
 
 **Evidence:**
-![BUG-02: "Expired" message when MEM004 borrows a book](screenshots/BUG-02.png)
+![BUG-02: "Expired" message when MEM004 borrows a book](../screenshots/BUG-02.png)
 
 **Suggested Fix:**
 Review the error message handling logic in the borrow book function. Ensure that when member status is "Suspended", the error message must contain the word "suspended". The code may be combining both "Suspended" and "Expired" cases into the same message branch.
@@ -132,7 +132,7 @@ System rejects creating new member. Displays error message "Invalid email" even 
 Cannot add any new member with a valid email — **member management feature is completely unusable**. This is a critical bug that paralyzes the entire REQ-07 feature. Combined with BUG-04, the email validation logic is **completely inverted**: valid → rejected, invalid → accepted. Probable cause: email validation logic is inverted or uses an incorrect regular expression (regex).
 
 **Evidence:**
-![BUG-03: "Invalid email" message with a valid email](screenshots/BUG-03.png)
+![BUG-03: "Invalid email" message with a valid email](../screenshots/BUG-03.png)
 
 **Suggested Fix:**
 Review the email validation logic in the add member form. The validation expression may be incorrect or inverted — accepting invalid emails (missing domain dot) while rejecting valid ones. Fix the regex/validation logic to ensure: an email with `@` AND `.` in the domain portion is considered valid.
@@ -172,7 +172,7 @@ System **accepts** email `user@domain`, creates new member successfully. No erro
 Allows creating members with invalid emails, violating SRS REQ-07 and BR-08 validation rules. Member data is incorrect — invalid emails may cause errors when sending notifications or contacting members. Combined with BUG-03, the email validation logic is **completely inverted**: valid → rejected, invalid → accepted.
 
 **Evidence:**
-![BUG-04: Member created successfully with email user@domain](screenshots/BUG-04.png)
+![BUG-04: Member created successfully with email user@domain](../screenshots/BUG-04.png)
 
 **Suggested Fix:**
 Fix the email validation logic — invert the check condition. Ensure email `user@domain` (missing `.` in domain) is rejected, and email `nguyenvanmoi@email.com` (with both `@` and `.` in domain) is accepted. May need to rewrite the email validation regex entirely.
@@ -212,7 +212,7 @@ System rejects creating member but displays error message **"Invalid email"** in
 Users (Librarians) receive incorrect messages — they do not know the actual reason is that the email already exists. They may misunderstand that the email format is wrong and try entering a different email instead of understanding they need to use a new email address. Causes confusion and wasted time.
 
 **Evidence:**
-![BUG-05: "Invalid email" message when entering an existing email](screenshots/BUG-05.png)
+![BUG-05: "Invalid email" message when entering an existing email](../screenshots/BUG-05.png)
 
 **Suggested Fix:**
 Separate the two check conditions: (1) Check email format validity → message "Invalid email", (2) Check email already exists → message "Email already exists". Ensure duplicate email check is performed and returns an appropriate message before the format validation.
@@ -254,9 +254,9 @@ Default tab displays correctly (only MEM002's records). However, when entering a
 Serious violation of borrow record privacy rules (BR-07 and SRS REQ-08). Member A can view the entire borrow/return history of Member B, including book information, borrow dates, and status — this is a personal data leak. This is a high-impact security vulnerability in a production system.
 
 **Evidence:**
-![BUG-06: MEM002 views MEM003's borrow records](screenshots/BUG-06_MEM003.png)
+![BUG-06: MEM002 views MEM003's borrow records](../screenshots/BUG-06_MEM003.png)
 
-![BUG-06: MEM002 views MEM006's borrow records](screenshots/BUG-06_MEM006.png)
+![BUG-06: MEM002 views MEM006's borrow records](../screenshots/BUG-06_MEM006.png)
 
 **Suggested Fix:**
 Add access control check in the borrow record lookup function: when the logged-in user is a "Member", only allow lookup with their own member ID. If a different member ID is entered → deny access or automatically redirect to their own records. Only "Librarian" should have the right to look up any member's records.
@@ -294,7 +294,7 @@ Displays message **"No books found"** — 0 results. The filter only works corre
 Users entering a genre in lowercase (common in real-world usage) will not find books even though the genre exists. Violates the case-insensitive requirement of SRS REQ-03 and BR-10. Causes poor user experience — users may think the library has no books in that genre.
 
 **Evidence:**
-![BUG-07: "No books found" when filtering "technology" in lowercase](screenshots/BUG-07.png)
+![BUG-07: "No books found" when filtering "technology" in lowercase](../screenshots/BUG-07.png)
 
 **Suggested Fix:**
 Fix the genre filter logic: compare the filter value with the book genre after converting both to the same case (lowercase or uppercase) before comparing. For example: `filter.toLowerCase() === book.genre.toLowerCase()`. Ensure the filter operates case-insensitively as required by SRS.
