@@ -12,6 +12,7 @@
 | **Class** | 252ICT2012.11 |
 | **Report Date** | 06/06/2026 |
 | **System Under Test** | https://stqa.rbc.vn — v1.0 |
+| **GitHub Repository** | https://github.com/USTH-STQA-2026/stqa-manual-testing-stqa_group_11 |
 
 ---
 
