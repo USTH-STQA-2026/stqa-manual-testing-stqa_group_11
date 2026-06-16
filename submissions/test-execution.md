@@ -53,6 +53,9 @@
 
 SRS requires the Librarian to have the right to "borrow books for members" (SRS Section 1). However, the system **does not display a Borrow button** when logged in as Librarian — this feature is not yet implemented (unimplemented feature). Therefore, TC-15 and TC-16 were executed by **logging in directly with the member account** (MEM004/MEM005) instead of through the Librarian.
 
+**Evidence:**
+![Librarian — no Borrow button on any book](evidences/TC-Librarian_no_borrow_button.png)
+
 This execution method is still valid because:
 - SRS REQ-01 only checks email + password for login — does not require checking member status at the login step.
 - SRS REQ-04 specifies that borrow rejection applies at the **borrowing step** — regardless of who performs the action (member borrowing directly or Librarian borrowing on their behalf).
@@ -63,9 +66,15 @@ SRS REQ-05 requires displaying an overdue warning when returning an overdue book
 
 This is an **unimplemented feature**, not a code bug. TC-19 records Fail because the actual result does not match SRS, but **no bug report is created**.
 
+**Evidence:**
+![TC-19 — No overdue warning when returning overdue book](evidences/TC-19_unimplemented.png)
+
 ### Note 3: Additional Finding — Unimplemented Feature
 
 When logged in as Librarian, the "Books" tab **does not display a Borrow button** on any book. The Librarian also **cannot create a borrow record** for a member from the "Borrow / Return" tab. Per SRS Section 1: the Librarian must have the right to "borrow/return books for members" → This is an **unimplemented feature**, not a code bug.
+
+**Evidence:**
+![Librarian — no Borrow button on any book](evidences/TC-Librarian_no_borrow_button.png)
 
 ---
 
