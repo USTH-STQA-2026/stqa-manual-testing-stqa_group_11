@@ -1,299 +1,299 @@
-# Bug Reports — Báo cáo lỗi
+# Bug Reports
 
-> **Hướng dẫn**: Tạo 1 mục bug cho mỗi TC có kết quả **Fail** (do lỗi code, không phải tính năng chưa triển khai).
-> Xem [examples/sample-bug-report.md](../examples/sample-bug-report.md) để hiểu cách viết bug report tốt.
-> Mỗi bug cần: tiêu đề mô tả hành vi lỗi, bước tái hiện, expected vs actual, severity + giải thích.
+> **Instructions**: Create one bug report for each TC with a **Fail** result (due to code defects, not unimplemented features).
+> See [examples/sample-bug-report.md](../examples/sample-bug-report.md) for how to write a good bug report.
+> Each bug needs: a title describing the erroneous behavior, steps to reproduce, expected vs actual, severity + explanation.
 
-| Thông tin | |
+| Information | |
 |---|---|
-| **Nhóm** | Nhóm 11 |
-| **Ngày báo cáo** | 06/06/2026 |
+| **Team** | Team 11 |
+| **Report Date** | 06/06/2026 |
 
-**Môi trường:**
-- Trình duyệt: Chrome (bản mới nhất)
-- Hệ điều hành: Windows 11
-- Ngôn ngữ giao diện: Tiếng Việt
+**Environment:**
+- Browser: Chrome (latest version)
+- Operating System: Windows 11
+- Interface Language: Vietnamese
 
-> **📌 Lưu ý**: TC-19 (không hiển thị cảnh báo quá hạn khi trả sách) và việc "Thủ thư không có nút Mượn" là **tính năng chưa triển khai** (unimplemented features), không phải lỗi code. Do đó, không tạo bug report cho các trường hợp này.
-
----
-
-## BUG-01: Mượn được sách thứ 4 — vượt giới hạn tối đa 3 sách/thành viên (lỗi off-by-one: `>` thay vì `>=`)
-
-| Thuộc tính | Chi tiết |
-|-----------|---------|
-| **Mã lỗi** | BUG-01 |
-| **TC liên quan** | TC-17 |
-| **REQ liên quan** | REQ-04 |
-| **Mức độ** | High |
-| **Người phát hiện** | Nhóm 11 |
-| **Ngày phát hiện** | 06/06/2026 |
-| **Trạng thái** | Open |
-
-**Điều kiện tiên quyết:**
-Đã đăng nhập bằng tài khoản thành viên đang hoạt động với 0 sách đang mượn. Dữ liệu đã reset (F5).
-
-**Bước tái hiện:**
-1. Nhập email `dam.tran@email.com` (MEM003, Hoạt động, 0 sách đang mượn) và mật khẩu `password123`.
-2. Nhấn nút **Đăng nhập**.
-3. Chuyển đến tab **Sách**.
-4. Mượn sách BOOK001 → thành công (đang mượn 1 sách).
-5. Mượn sách BOOK002 → thành công (đang mượn 2 sách).
-6. Mượn sách BOOK004 → thành công (đang mượn 3 sách).
-7. Mượn sách BOOK005 (thử mượn cuốn thứ 4).
-
-**Kết quả mong đợi:**
-Bước 4–6: Mượn thành công. Bước 7: Hệ thống **từ chối** mượn cuốn thứ 4. Hiển thị thông báo lỗi "Đã đạt giới hạn mượn tối đa (3 sách)". (Theo SRS REQ-04: tối đa 3 sách/thành viên cùng lúc).
-
-**Kết quả thực tế:**
-Bước 4–6: Mượn thành công. Bước 7: Hệ thống **cho phép mượn cuốn thứ 4** — không bị từ chối, không hiển thị thông báo lỗi. Thành viên MEM003 đang mượn 4 sách cùng lúc.
-
-**Tác động:**
-Vi phạm nghiêm trọng quy tắc nghiệp vụ cốt lõi (BR-01): giới hạn tối đa 3 sách/thành viên. Cho phép thành viên mượn không giới hạn, gây mất kiểm soát số lượng sách mỗi người. Nguyên nhân khả thi: code sử dụng toán tử `>` thay vì `>=` khi so sánh số sách đang mượn với giới hạn (off-by-one error).
-
-**Minh chứng:**
-![BUG-01: MEM003 đang mượn 4 sách](evidences/BUG-01.png)
-
-**Đề xuất xử lý:**
-Sửa điều kiện kiểm tra giới hạn mượn từ `if (currentBorrowCount > maxBooksPerMember)` sang `if (currentBorrowCount >= maxBooksPerMember)`. Khi số sách đang mượn = 3 (giới hạn tối đa), phải từ chối mượn thêm.
+> **📌 Note**: TC-19 (no overdue warning when returning a book) and the "Librarian has no Borrow button" issue are **unimplemented features**, not code bugs. Therefore, no bug reports are created for these cases.
 
 ---
 
-## BUG-02: Thành viên "Tạm ngưng" mượn sách nhận thông báo lỗi "hết hạn" thay vì "tạm ngưng"
+## BUG-01: Able to borrow a 4th book — exceeds maximum limit of 3 books/member (off-by-one error: `>` instead of `>=`)
 
-| Thuộc tính | Chi tiết |
+| Attribute | Details |
 |-----------|---------|
-| **Mã lỗi** | BUG-02 |
-| **TC liên quan** | TC-15 |
-| **REQ liên quan** | REQ-04 |
-| **Mức độ** | Medium |
-| **Người phát hiện** | Nhóm 11 |
-| **Ngày phát hiện** | 06/06/2026 |
-| **Trạng thái** | Open |
+| **Bug ID** | BUG-01 |
+| **Related TC** | TC-17 |
+| **Related REQ** | REQ-04 |
+| **Severity** | High |
+| **Detected By** | Team 11 |
+| **Detection Date** | 06/06/2026 |
+| **Status** | Open |
 
-**Điều kiện tiên quyết:**
-Trang đăng nhập đã mở, dữ liệu đã reset (F5).
+**Precondition:**
+Logged in with an active member account with 0 books currently borrowed. Data has been reset (F5).
 
-**Bước tái hiện:**
-1. Nhập email `cu.le@email.com` (MEM004, trạng thái Tạm ngưng) và mật khẩu `password123`.
-2. Nhấn nút **Đăng nhập**.
-3. Chuyển đến tab **Sách**.
-4. Tìm sách BOOK001 (Lập trình Flutter cơ bản, trạng thái "Có sẵn").
-5. Nhấn nút **Mượn** trên BOOK001.
+**Steps to Reproduce:**
+1. Enter email `dam.tran@email.com` (MEM003, Active, 0 books currently borrowed) and password `password123`.
+2. Click **Login**.
+3. Go to **Books** tab.
+4. Borrow BOOK001 → success (currently borrowing 1 book).
+5. Borrow BOOK002 → success (currently borrowing 2 books).
+6. Borrow BOOK004 → success (currently borrowing 3 books).
+7. Borrow BOOK005 (attempt to borrow a 4th book).
 
-**Kết quả mong đợi:**
-Hệ thống từ chối mượn sách. Hiển thị thông báo lỗi chứa từ **"tạm ngưng"** — ví dụ: "Thành viên đang bị tạm ngưng. Không thể mượn sách." (Theo SRS REQ-04: thông báo lỗi phải mô tả **đúng lý do** từ chối, tạm ngưng ≠ hết hạn).
+**Expected Result:**
+Steps 4–6: Borrow successful. Step 7: System **rejects** the 4th borrow. Displays error message "Maximum borrow limit reached (3 books)". (Per SRS REQ-04: maximum 3 books/member at the same time).
 
-**Kết quả thực tế:**
-Hệ thống từ chối mượn sách nhưng hiển thị thông báo **"Thành viên đã hết hạn. Không thể mượn sách."** thay vì "tạm ngưng". Người dùng không thể phân biệt được lý do thực tế bị từ chối là do tạm ngưng hay hết hạn.
+**Actual Result:**
+Steps 4–6: Borrow successful. Step 7: System **allows borrowing the 4th book** — no rejection, no error message displayed. Member MEM003 is currently borrowing 4 books simultaneously.
 
-**Tác động:**
-Thành viên bị tạm ngưng nhận thông báo sai, gây nhầm lẫn về lý do từ chối. Vi phạm quy tắc SRS REQ-04 yêu cầu thông báo lỗi phải mô tả đúng lý do. Thủ thư và thành viên không xác định được trạng thái tài khoản thực tế để có hành động khắc phục phù hợp.
+**Impact:**
+Serious violation of core business rule (BR-01): maximum 3 books/member limit. Allows members to borrow unlimited books, causing loss of control over the number of books per person. Probable cause: code uses operator `>` instead of `>=` when comparing current borrow count with the limit (off-by-one error).
 
-**Minh chứng:**
-![BUG-02: Thông báo "hết hạn" khi MEM004 mượn sách](evidences/BUG-02.png)
+**Evidence:**
+![BUG-01: MEM003 currently borrowing 4 books](evidences/BUG-01.png)
 
-**Đề xuất xử lý:**
-Kiểm tra lại logic xử lý thông báo lỗi trong hàm mượn sách. Đảm bảo khi trạng thái thành viên là "Tạm ngưng" (suspended), thông báo lỗi phải chứa từ "tạm ngưng". Có thể code đang gộp chung 2 trường hợp "Tạm ngưng" và "Hết hạn" vào cùng 1 nhánh thông báo.
+**Suggested Fix:**
+Change the borrow limit check condition from `if (currentBorrowCount > maxBooksPerMember)` to `if (currentBorrowCount >= maxBooksPerMember)`. When the number of books currently borrowed = 3 (maximum limit), further borrowing must be rejected.
 
 ---
 
-## BUG-03: Email hợp lệ bị từ chối với thông báo "Email không hợp lệ" khi thêm thành viên mới
+## BUG-02: Suspended member borrowing book receives "expired" error message instead of "suspended"
 
-| Thuộc tính | Chi tiết |
+| Attribute | Details |
 |-----------|---------|
-| **Mã lỗi** | BUG-03 |
-| **TC liên quan** | TC-22 |
-| **REQ liên quan** | REQ-07 |
-| **Mức độ** | High |
-| **Người phát hiện** | Nhóm 11 |
-| **Ngày phát hiện** | 06/06/2026 |
-| **Trạng thái** | Open |
+| **Bug ID** | BUG-02 |
+| **Related TC** | TC-15 |
+| **Related REQ** | REQ-04 |
+| **Severity** | Medium |
+| **Detected By** | Team 11 |
+| **Detection Date** | 06/06/2026 |
+| **Status** | Open |
 
-**Điều kiện tiên quyết:**
-Đã đăng nhập bằng Thủ thư (`librarian@library.com` / `admin123`). Dữ liệu đã reset (F5).
+**Precondition:**
+Login page is open, data has been reset (F5).
 
-**Bước tái hiện:**
-1. Chuyển đến tab **Thành viên**.
-2. Nhấn nút **Thêm thành viên**.
-3. Nhập họ tên: `Nguyễn Văn Mới`.
-4. Nhập email: `nguyenvanmoi@email.com` (email hợp lệ — có `@` VÀ có dấu `.` trong domain).
-5. Nhập số điện thoại: `0901234567`.
-6. Nhấn nút **Tạo** / **Lưu**.
+**Steps to Reproduce:**
+1. Enter email `cu.le@email.com` (MEM004, Suspended status) and password `password123`.
+2. Click **Login**.
+3. Go to **Books** tab.
+4. Find book BOOK001 (Lap trinh Flutter co ban, status "Available").
+5. Click **Borrow** on BOOK001.
 
-**Kết quả mong đợi:**
-Tạo thành viên mới thành công. Thành viên xuất hiện trong danh sách với trạng thái "Hoạt động". (Theo SRS REQ-07: email hợp lệ phải có `@` VÀ dấu `.` trong domain — `nguyenvanmoi@email.com` thỏa mãn cả 2 điều kiện).
+**Expected Result:**
+System rejects borrowing. Displays error message containing **"suspended"** — e.g., "Member is currently suspended. Cannot borrow books." (Per SRS REQ-04: error message must describe the **correct reason** for rejection; suspended ≠ expired).
 
-**Kết quả thực tế:**
-Hệ thống từ chối tạo thành viên mới. Hiển thị thông báo lỗi "Email không hợp lệ" dù email `nguyenvanmoi@email.com` hoàn toàn hợp lệ theo SRS.
+**Actual Result:**
+System rejects borrowing but displays the message **"Member has expired. Cannot borrow books."** instead of "suspended". Users cannot distinguish whether the actual reason for rejection is suspension or expiration.
 
-**Tác động:**
-Không thể thêm bất kỳ thành viên mới nào có email hợp lệ — **chức năng quản lý thành viên hoàn toàn không sử dụng được**. Đây là lỗi nghiêm trọng làm tê liệt toàn bộ tính năng REQ-07. Kết hợp với BUG-04, logic xác thực email bị **đảo ngược hoàn toàn**: hợp lệ → từ chối, không hợp lệ → chấp nhận. Nguyên nhân khả thi: logic xác thực email bị đảo ngược hoặc sai biểu thức chính quy (regex).
+**Impact:**
+Suspended members receive incorrect error messages, causing confusion about the reason for rejection. Violates SRS REQ-04 requirement that error messages must describe the correct reason. Librarians and members cannot determine the actual account status to take appropriate corrective action.
 
-**Minh chứng:**
-![BUG-03: Thông báo "Email không hợp lệ" với email hợp lệ](evidences/BUG-03.png)
+**Evidence:**
+![BUG-02: "Expired" message when MEM004 borrows a book](evidences/BUG-02.png)
 
-**Đề xuất xử lý:**
-Kiểm tra lại logic xác thực email trong form thêm thành viên. Biểu thức xác thực có thể bị sai hoặc bị đảo ngược — chấp nhận email không hợp lệ (thiếu dấu chấm domain) nhưng từ chối email hợp lệ. Sửa regex/logic kiểm tra email để đảm bảo: email có `@` VÀ có `.` trong phần domain thì hợp lệ.
+**Suggested Fix:**
+Review the error message handling logic in the borrow book function. Ensure that when member status is "Suspended", the error message must contain the word "suspended". The code may be combining both "Suspended" and "Expired" cases into the same message branch.
 
 ---
 
-## BUG-04: Email không hợp lệ `user@domain` (thiếu dấu chấm trong domain) được chấp nhận khi thêm thành viên
+## BUG-03: Valid email rejected with "Invalid email" message when adding a new member
 
-| Thuộc tính | Chi tiết |
+| Attribute | Details |
 |-----------|---------|
-| **Mã lỗi** | BUG-04 |
-| **TC liên quan** | TC-23 |
-| **REQ liên quan** | REQ-07 |
-| **Mức độ** | High |
-| **Người phát hiện** | Nhóm 11 |
-| **Ngày phát hiện** | 06/06/2026 |
-| **Trạng thái** | Open |
+| **Bug ID** | BUG-03 |
+| **Related TC** | TC-22 |
+| **Related REQ** | REQ-07 |
+| **Severity** | High |
+| **Detected By** | Team 11 |
+| **Detection Date** | 06/06/2026 |
+| **Status** | Open |
 
-**Điều kiện tiên quyết:**
-Đã đăng nhập bằng Thủ thư. Dữ liệu đã reset (F5).
+**Precondition:**
+Logged in as Librarian (`librarian@library.com` / `admin123`). Data has been reset (F5).
 
-**Bước tái hiện:**
-1. Chuyển đến tab **Thành viên**.
-2. Nhấn nút **Thêm thành viên**.
-3. Nhập họ tên: `Test User`.
-4. Nhập email: `user@domain` (có `@` nhưng **không có dấu `.`** trong phần domain).
-5. Nhập số điện thoại: `0901234567`.
-6. Nhấn nút **Tạo** / **Lưu**.
+**Steps to Reproduce:**
+1. Go to **Members** tab.
+2. Click **Add Member**.
+3. Enter full name: `Nguyen Van Moi`.
+4. Enter email: `nguyenvanmoi@email.com` (valid email — has `@` AND has `.` in domain).
+5. Enter phone number: `0901234567`.
+6. Click **Create** / **Save**.
 
-**Kết quả mong đợi:**
-Hệ thống **từ chối** tạo thành viên. Hiển thị thông báo lỗi email không hợp lệ. (Theo SRS REQ-07: email phải hợp lệ — có `@` **VÀ** có dấu `.` trong phần domain. Email `user@domain` KHÔNG hợp lệ vì thiếu dấu `.` trong domain).
+**Expected Result:**
+New member created successfully. Member appears in the list with status "Active". (Per SRS REQ-07: valid email must have `@` AND `.` in domain — `nguyenvanmoi@email.com` satisfies both conditions).
 
-**Kết quả thực tế:**
-Hệ thống **chấp nhận** email `user@domain`, tạo thành viên mới thành công. Không hiển thị thông báo lỗi.
+**Actual Result:**
+System rejects creating new member. Displays error message "Invalid email" even though `nguyenvanmoi@email.com` is completely valid per SRS.
 
-**Tác động:**
-Cho phép tạo thành viên với email không hợp lệ, vi phạm quy tắc xác thực SRS REQ-07 và BR-08. Dữ liệu thành viên bị sai — email không hợp lệ có thể gây lỗi khi cần gửi thông báo hoặc liên lạc. Kết hợp với BUG-03, logic xác thực email bị **đảo ngược hoàn toàn**: hợp lệ → từ chối, không hợp lệ → chấp nhận.
+**Impact:**
+Cannot add any new member with a valid email — **member management feature is completely unusable**. This is a critical bug that paralyzes the entire REQ-07 feature. Combined with BUG-04, the email validation logic is **completely inverted**: valid → rejected, invalid → accepted. Probable cause: email validation logic is inverted or uses an incorrect regular expression (regex).
 
-**Minh chứng:**
-![BUG-04: Tạo thành viên thành công với email user@domain](evidences/BUG-04.png)
+**Evidence:**
+![BUG-03: "Invalid email" message with a valid email](evidences/BUG-03.png)
 
-**Đề xuất xử lý:**
-Sửa logic xác thực email — đảo ngược điều kiện kiểm tra. Đảm bảo email `user@domain` (thiếu dấu `.` trong domain) bị từ chối, và email `nguyenvanmoi@email.com` (có đủ `@` và `.` trong domain) được chấp nhận. Có thể cần viết lại biểu thức regex xác thực email hoàn toàn.
+**Suggested Fix:**
+Review the email validation logic in the add member form. The validation expression may be incorrect or inverted — accepting invalid emails (missing domain dot) while rejecting valid ones. Fix the regex/validation logic to ensure: an email with `@` AND `.` in the domain portion is considered valid.
 
 ---
 
-## BUG-05: Email đã tồn tại hiển thị thông báo sai "Email không hợp lệ" thay vì "Email đã tồn tại"
+## BUG-04: Invalid email `user@domain` (missing dot in domain) accepted when adding a member
 
-| Thuộc tính | Chi tiết |
+| Attribute | Details |
 |-----------|---------|
-| **Mã lỗi** | BUG-05 |
-| **TC liên quan** | TC-24 |
-| **REQ liên quan** | REQ-07 |
-| **Mức độ** | Medium |
-| **Người phát hiện** | Nhóm 11 |
-| **Ngày phát hiện** | 06/06/2026 |
-| **Trạng thái** | Open |
+| **Bug ID** | BUG-04 |
+| **Related TC** | TC-23 |
+| **Related REQ** | REQ-07 |
+| **Severity** | High |
+| **Detected By** | Team 11 |
+| **Detection Date** | 06/06/2026 |
+| **Status** | Open |
 
-**Điều kiện tiên quyết:**
-Đã đăng nhập bằng Thủ thư. Dữ liệu đã reset (F5).
+**Precondition:**
+Logged in as Librarian. Data has been reset (F5).
 
-**Bước tái hiện:**
-1. Chuyển đến tab **Thành viên**.
-2. Nhấn nút **Thêm thành viên**.
-3. Nhập họ tên: `Trùng Email`.
-4. Nhập email: `ba.nguyen@email.com` (email đã tồn tại trong hệ thống — MEM002).
-5. Nhập số điện thoại: `0901234567`.
-6. Nhấn nút **Tạo** / **Lưu**.
+**Steps to Reproduce:**
+1. Go to **Members** tab.
+2. Click **Add Member**.
+3. Enter full name: `Test User`.
+4. Enter email: `user@domain` (has `@` but **no `.`** in the domain portion).
+5. Enter phone number: `0901234567`.
+6. Click **Create** / **Save**.
 
-**Kết quả mong đợi:**
-Hệ thống từ chối tạo thành viên. Hiển thị thông báo lỗi **"Email đã tồn tại"** (hoặc tương tự, mô tả đúng lý do từ chối là do trùng email). (Theo SRS REQ-07: "Không cho phép tạo email đã tồn tại → thông báo lỗi").
+**Expected Result:**
+System **rejects** creating member. Displays invalid email error message. (Per SRS REQ-07: email must be valid — have `@` **AND** have `.` in domain. Email `user@domain` is INVALID because it lacks `.` in domain).
 
-**Kết quả thực tế:**
-Hệ thống từ chối tạo thành viên nhưng hiển thị thông báo **"Email không hợp lệ"** thay vì "Email đã tồn tại". Lý do từ chối đúng (email trùng) nhưng thông báo sai (hiển thị lý do không hợp lệ).
+**Actual Result:**
+System **accepts** email `user@domain`, creates new member successfully. No error message displayed.
 
-**Tác động:**
-Người dùng (Thủ thư) nhận thông báo sai — không biết lý do thực tế là email đã tồn tại, có thể hiểu nhầm rằng định dạng email sai và thử nhập lại email khác thay vì hiểu rằng cần dùng email mới. Gây nhầm lẫn và mất thời gian.
+**Impact:**
+Allows creating members with invalid emails, violating SRS REQ-07 and BR-08 validation rules. Member data is incorrect — invalid emails may cause errors when sending notifications or contacting members. Combined with BUG-03, the email validation logic is **completely inverted**: valid → rejected, invalid → accepted.
 
-**Minh chứng:**
-![BUG-05: Thông báo "Email không hợp lệ" khi nhập email đã tồn tại](evidences/BUG-05.png)
+**Evidence:**
+![BUG-04: Member created successfully with email user@domain](evidences/BUG-04.png)
 
-**Đề xuất xử lý:**
-Tách riêng 2 điều kiện kiểm tra: (1) Kiểm tra định dạng email hợp lệ → thông báo "Email không hợp lệ", (2) Kiểm tra email đã tồn tại → thông báo "Email đã tồn tại". Đảm bảo kiểm tra trùng email được thực hiện và trả về thông báo phù hợp trước khi kiểm tra định dạng.
+**Suggested Fix:**
+Fix the email validation logic — invert the check condition. Ensure email `user@domain` (missing `.` in domain) is rejected, and email `nguyenvanmoi@email.com` (with both `@` and `.` in domain) is accepted. May need to rewrite the email validation regex entirely.
 
 ---
 
-## BUG-06: Thành viên xem được phiếu mượn của thành viên khác — vi phạm quyền truy cập SRS REQ-08
+## BUG-05: Duplicate email displays incorrect message "Invalid email" instead of "Email already exists"
 
-| Thuộc tính | Chi tiết |
+| Attribute | Details |
 |-----------|---------|
-| **Mã lỗi** | BUG-06 |
-| **TC liên quan** | TC-27 |
-| **REQ liên quan** | REQ-08 |
-| **Mức độ** | High |
-| **Người phát hiện** | Nhóm 11 |
-| **Ngày phát hiện** | 06/06/2026 |
-| **Trạng thái** | Open |
+| **Bug ID** | BUG-05 |
+| **Related TC** | TC-24 |
+| **Related REQ** | REQ-07 |
+| **Severity** | Medium |
+| **Detected By** | Team 11 |
+| **Detection Date** | 06/06/2026 |
+| **Status** | Open |
 
-**Điều kiện tiên quyết:**
-Đã đăng nhập bằng tài khoản thành viên MEM002. Dữ liệu đã reset (F5).
+**Precondition:**
+Logged in as Librarian. Data has been reset (F5).
 
-**Bước tái hiện:**
-1. Nhập email `ba.nguyen@email.com` (MEM002) và mật khẩu `password123`.
-2. Nhấn nút **Đăng nhập**.
-3. Chuyển đến tab **Mượn / Trả**.
-4. Tab mặc định chỉ hiển thị phiếu của MEM002 (BR001, BR004) — đúng.
-5. Trong phần tra cứu phiếu mượn, nhập mã thành viên **MEM003**.
-6. Quan sát kết quả — thấy phiếu BR002 và BR005 của MEM003.
-7. Nhập mã thành viên **MEM006**.
-8. Quan sát kết quả — thấy phiếu BR003 của MEM006.
+**Steps to Reproduce:**
+1. Go to **Members** tab.
+2. Click **Add Member**.
+3. Enter full name: `Duplicate Email`.
+4. Enter email: `ba.nguyen@email.com` (email already exists in the system — MEM002).
+5. Enter phone number: `0901234567`.
+6. Click **Create** / **Save**.
 
-**Kết quả mong đợi:**
-MEM002 **không xem được** phiếu mượn của MEM003 hoặc MEM006. Theo SRS REQ-08: "Thành viên chỉ xem phiếu mượn **của chính mình**. **KHÔNG được xem phiếu mượn của thành viên khác.**"
+**Expected Result:**
+System rejects creating member. Displays error message **"Email already exists"** (or similar, describing the correct reason for rejection as duplicate email). (Per SRS REQ-07: "Do not allow creating duplicate email → error message").
 
-**Kết quả thực tế:**
-Tab mặc định hiển thị đúng (chỉ phiếu của MEM002). Tuy nhiên, khi nhập mã thành viên khác (MEM003/MEM006), MEM002 có thể xem đầy đủ phiếu mượn của họ. Không có bất kỳ hạn chế quyền truy cập nào cho chức năng tra cứu.
+**Actual Result:**
+System rejects creating member but displays error message **"Invalid email"** instead of "Email already exists". The rejection reason is correct (duplicate email) but the message is wrong (shows invalid format reason).
 
-**Tác động:**
-Vi phạm nghiêm trọng quy tắc bảo mật phiếu mượn (BR-07 và SRS REQ-08). Thành viên A có thể xem toàn bộ lịch sử mượn/trả của thành viên B, bao gồm thông tin sách mượn, ngày mượn, trạng thái — đây là rò rỉ dữ liệu cá nhân. Lỗi bảo mật có mức độ ảnh hưởng cao trong hệ thống thực tế.
+**Impact:**
+Users (Librarians) receive incorrect messages — they do not know the actual reason is that the email already exists. They may misunderstand that the email format is wrong and try entering a different email instead of understanding they need to use a new email address. Causes confusion and wasted time.
 
-**Minh chứng:**
-![BUG-06: MEM002 xem phiếu mượn của MEM003](evidences/BUG-06_MEM003.png)
+**Evidence:**
+![BUG-05: "Invalid email" message when entering an existing email](evidences/BUG-05.png)
 
-![BUG-06: MEM002 xem phiếu mượn của MEM006](evidences/BUG-06_MEM006.png)
-
-**Đề xuất xử lý:**
-Thêm kiểm tra quyền truy cập trong hàm tra cứu phiếu mượn: khi người dùng đăng nhập là "Thành viên", chỉ cho phép tra cứu với chính mã thành viên của họ. Nếu nhập mã thành viên khác → từ chối truy cập hoặc tự động chuyển về xem phiếu của chính mình. Chỉ "Thủ thư" mới có quyền tra cứu mọi thành viên.
+**Suggested Fix:**
+Separate the two check conditions: (1) Check email format validity → message "Invalid email", (2) Check email already exists → message "Email already exists". Ensure duplicate email check is performed and returns an appropriate message before the format validation.
 
 ---
 
-## BUG-07: Lọc sách theo thể loại "công nghệ" (chữ thường) trả về 0 kết quả — bộ lọc phân biệt hoa/thường (case-sensitive)
+## BUG-06: Member can view other members' borrow records — violates access control SRS REQ-08
 
-| Thuộc tính | Chi tiết |
+| Attribute | Details |
 |-----------|---------|
-| **Mã lỗi** | BUG-07 |
-| **TC liên quan** | TC-28 |
-| **REQ liên quan** | REQ-03 |
-| **Mức độ** | Medium |
-| **Người phát hiện** | Nhóm 11 |
-| **Ngày phát hiện** | 06/06/2026 |
-| **Trạng thái** | Open |
+| **Bug ID** | BUG-06 |
+| **Related TC** | TC-27 |
+| **Related REQ** | REQ-08 |
+| **Severity** | High |
+| **Detected By** | Team 11 |
+| **Detection Date** | 06/06/2026 |
+| **Status** | Open |
 
-**Điều kiện tiên quyết:**
-Đã đăng nhập, đang ở tab **Sách**. Dữ liệu đã reset (F5).
+**Precondition:**
+Logged in with member account MEM002. Data has been reset (F5).
 
-**Bước tái hiện:**
-1. Chuyển đến tab **Sách**.
-2. Lọc thể loại **Công nghệ** (viết hoa) → hiển thị 8 sách — đúng.
-3. Xóa bộ lọc → Lọc thể loại **công nghệ** (chữ thường).
-4. Quan sát danh sách kết quả.
+**Steps to Reproduce:**
+1. Enter email `ba.nguyen@email.com` (MEM002) and password `password123`.
+2. Click **Login**.
+3. Go to **Borrow / Return** tab.
+4. Default tab shows only MEM002's records (BR001, BR004) — correct.
+5. In the borrow record lookup section, enter member ID **MEM003**.
+6. Observe results — see records BR002 and BR005 of MEM003.
+7. Enter member ID **MEM006**.
+8. Observe results — see record BR003 of MEM006.
 
-**Kết quả mong đợi:**
-Hiển thị **8 sách** thể loại Công nghệ — giống hệt kết quả khi lọc bằng "Công nghệ" (chữ hoa). (Theo SRS REQ-03: "Tìm kiếm **KHÔNG phân biệt chữ hoa/thường** (case-insensitive)"). Quy tắc BR-10 cũng yêu cầu: "Tìm kiếm không phân biệt hoa/thường".
+**Expected Result:**
+MEM002 **cannot view** borrow records of MEM003 or MEM006. Per SRS REQ-08: "Members can only view **their own** borrow records. **Must NOT view other members' borrow records.**"
 
-**Kết quả thực tế:**
-Hiển thị thông báo **"Không tìm thấy sách nào"** — 0 kết quả. Bộ lọc chỉ hoạt động đúng khi nhập "Công nghệ" (đúng chữ hoa/thường như trong dữ liệu). Bộ lọc đang phân biệt hoa/thường (case-sensitive).
+**Actual Result:**
+Default tab displays correctly (only MEM002's records). However, when entering another member's ID (MEM003/MEM006), MEM002 can view their full borrow records. There is no access restriction on the lookup function.
 
-**Tác động:**
-Người dùng nhập thể loại bằng chữ thường (phổ biến trong sử dụng thực tế) sẽ không tìm thấy sách dù thể loại đó tồn tại. Vi phạm yêu cầu case-insensitive của SRS REQ-03 và BR-10. Gây trải nghiệm người dùng kém — tưởng thư viện không có sách thể loại đó.
+**Impact:**
+Serious violation of borrow record privacy rules (BR-07 and SRS REQ-08). Member A can view the entire borrow/return history of Member B, including book information, borrow dates, and status — this is a personal data leak. This is a high-impact security vulnerability in a production system.
 
-**Minh chứng:**
-![BUG-07: "Không tìm thấy sách nào" khi lọc "công nghệ" chữ thường](evidences/BUG-07.png)
+**Evidence:**
+![BUG-06: MEM002 views MEM003's borrow records](evidences/BUG-06_MEM003.png)
 
-**Đề xuất xử lý:**
-Sửa logic lọc thể loại: so sánh giá trị lọc với thể loại sách sau khi đã chuyển cả 2 về cùng dạng (chữ thường hoặc chữ hoa) trước khi so sánh. Ví dụ: `filter.toLowerCase() === book.genre.toLowerCase()`. Đảm bảo bộ lọc hoạt động case-insensitive như yêu cầu SRS.
+![BUG-06: MEM002 views MEM006's borrow records](evidences/BUG-06_MEM006.png)
+
+**Suggested Fix:**
+Add access control check in the borrow record lookup function: when the logged-in user is a "Member", only allow lookup with their own member ID. If a different member ID is entered → deny access or automatically redirect to their own records. Only "Librarian" should have the right to look up any member's records.
+
+---
+
+## BUG-07: Filtering books by genre "technology" (lowercase) returns 0 results — filter is case-sensitive
+
+| Attribute | Details |
+|-----------|---------|
+| **Bug ID** | BUG-07 |
+| **Related TC** | TC-28 |
+| **Related REQ** | REQ-03 |
+| **Severity** | Medium |
+| **Detected By** | Team 11 |
+| **Detection Date** | 06/06/2026 |
+| **Status** | Open |
+
+**Precondition:**
+Logged in, on **Books** tab. Data has been reset (F5).
+
+**Steps to Reproduce:**
+1. Go to **Books** tab.
+2. Filter by genre **Technology** (capitalized) → displays 8 books — correct.
+3. Clear filter → Filter by genre **technology** (lowercase).
+4. Observe result list.
+
+**Expected Result:**
+Displays **8 books** in the Technology genre — identical to results when filtering with "Technology" (capitalized). (Per SRS REQ-03: "Search is **case-insensitive**"). Rule BR-10 also requires: "Search must be case-insensitive".
+
+**Actual Result:**
+Displays message **"No books found"** — 0 results. The filter only works correctly when entering "Technology" (matching the exact case as in the data). The filter is case-sensitive.
+
+**Impact:**
+Users entering a genre in lowercase (common in real-world usage) will not find books even though the genre exists. Violates the case-insensitive requirement of SRS REQ-03 and BR-10. Causes poor user experience — users may think the library has no books in that genre.
+
+**Evidence:**
+![BUG-07: "No books found" when filtering "technology" in lowercase](evidences/BUG-07.png)
+
+**Suggested Fix:**
+Fix the genre filter logic: compare the filter value with the book genre after converting both to the same case (lowercase or uppercase) before comparing. For example: `filter.toLowerCase() === book.genre.toLowerCase()`. Ensure the filter operates case-insensitively as required by SRS.
